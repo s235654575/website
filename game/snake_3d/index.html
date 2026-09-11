@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
+<title>貪食蛇 3D</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f8f7f3;color:#2c2c2a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+#sg{display:flex;flex-direction:column;align-items:center;padding:12px 8px 20px;gap:10px;width:100%}
+#sg-topbar{display:flex;align-items:center;gap:7px;width:100%;max-width:440px;flex-wrap:wrap}
+.sg-stat{background:#f0ede6;border-radius:8px;padding:5px 11px;text-align:center;min-width:52px}
+.sg-stat-label{font-size:11px;color:#9e9b93}
+.sg-stat-val{font-size:17px;font-weight:500;color:#2c2c2a}
+#sg-speed{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
+#sg-stage{position:relative;max-width:100%;border-radius:10px;overflow:hidden}
+#sg-canvas{display:block;touch-action:none;max-width:100%}
+#sg-idle{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;pointer-events:none;text-shadow:0 2px 10px rgba(0,0,0,0.35)}
+#sg-idle b{font-size:22px;font-weight:600;color:#fff;letter-spacing:1px}
+#sg-idle span{font-size:12px;color:#fff;opacity:0.85}
+#sg-theme-row{display:flex;gap:5px;align-items:center}
+.sg-tb{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer}
+.sg-tb.active{border-color:#2c2c2a}
+#sg-map-row{display:flex;gap:4px;align-items:center}
+.map-btn{font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;white-space:nowrap}
+.map-btn.active{background:#2c2c2a;color:#fff;border-color:#2c2c2a}
+button{background:#f0ede6;border:0.5px solid #d6d3cc;color:#2c2c2a;font-family:inherit}
+button:hover{background:#e8e5de}
+
+/* D-PAD */
+#dpad{
+  display:grid;
+  grid-template-columns:52px 52px 52px;
+  grid-template-rows:52px;
+  gap:0;width:156px;height:52px;flex-shrink:0;
+}
+.dp-btn{
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;-webkit-user-select:none;
+  background:#f0ede6;border:0.5px solid #d6d3cc;color:#666;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .1s,transform .08s;
+}
+.dp-btn:active{background:#e8e5de;transform:scale(0.91)}
+#dp-left {grid-column:1;grid-row:1;border-radius:10px 3px 3px 10px}
+#dp-center{grid-column:2;grid-row:1;pointer-events:none;background:#f0ede6;border:0.5px solid #d6d3cc}
+#dp-right{grid-column:3;grid-row:1;border-radius:3px 10px 10px 3px}
+.dp-svg{width:22px;height:22px;fill:none;stroke:#666;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* game-over overlay — fullscreen fixed */
+#sg-ov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;padding:24px}
+#sg-ov.show{display:flex}
+#sg-ov-box{background:#fff;border:0.5px solid #d6d3cc;border-radius:16px;padding:26px 24px 20px;width:100%;max-width:320px;text-align:center}
+#sg-ov-box h3{margin:0 0 4px;font-size:19px;font-weight:500}
+#sg-ov-box p{margin:0 0 14px;font-size:13px;color:#666}
+#sg-ov-box input{width:100%;margin-bottom:10px;border-radius:8px;font-size:14px;padding:8px 10px;border:0.5px solid #d6d3cc;background:#f0ede6;color:#2c2c2a;outline:none;font-family:inherit}
+#sg-ov-box input:focus{border-color:#999}
+.ov-btns{display:flex;gap:8px}
+.ov-btns button{flex:1;cursor:pointer;padding:9px;border-radius:8px;font-size:14px}
+
+/* rules — fullscreen fixed */
+#sg-rules{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;padding:24px}
+#sg-rules.show{display:flex}
+#sg-rules-box{background:#fff;border:0.5px solid #d6d3cc;border-radius:14px;padding:22px 24px;width:100%;max-width:310px}
+#sg-rules-box h3{margin:0 0 12px;font-size:16px;font-weight:500}
+.r-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:13px;color:#555;line-height:1.5}
+.r-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px}
+.fl{display:flex;align-items:center;gap:8px;font-size:12px;color:#555;margin-bottom:5px}
+.fl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* leaderboard */
+#sg-lb{width:100%;max-width:440px}
+#sg-lb-ul{list-style:none}
+#sg-lb-ul li{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:0.5px solid #e8e5de;font-size:13px}
+#sg-lb-ul li:last-child{border-bottom:none}
+.lb-rank{font-weight:500;width:20px;text-align:center;color:#999}
+.lb-name{flex:1;color:#2c2c2a}
+.lb-score{font-weight:500;color:#2c2c2a}
+.lb-badge{font-size:11px;padding:2px 7px;border-radius:20px}
+</style>
+</head>
+<body>
+<div id="sg">
+
+<div id="sg-topbar">
+  <div class="sg-stat"><div class="sg-stat-label">分數</div><div class="sg-stat-val" id="sg-score">0</div></div>
+  <div class="sg-stat"><div class="sg-stat-label">最高</div><div class="sg-stat-val" id="sg-best">0</div></div>
+  <span id="sg-speed">Lv.1</span>
+  <div style="flex:1"></div>
+  <div id="sg-map-row"></div>
+  <div id="sg-theme-row"></div>
+  <button id="btn-rules" title="遊戲規則" style="width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:15px;padding:0;flex-shrink:0">?</button>
+  <button id="btn-start" style="font-size:12px;padding:6px 12px;cursor:pointer;border-radius:8px;white-space:nowrap;flex-shrink:0">開始</button>
+</div>
+
+<div id="sg-stage">
+  <canvas id="sg-canvas"></canvas>
+  <div id="sg-idle"><b>貪食蛇 3D</b><span>按「開始」或方向鍵開始遊戲</span></div>
+</div>
+
+<div id="dpad">
+  <div class="dp-btn" id="dp-left">
+    <svg class="dp-svg" viewBox="0 0 22 22"><polyline points="15,4 7,11 15,18"/></svg>
+  </div>
+  <div id="dp-center"></div>
+  <div class="dp-btn" id="dp-right">
+    <svg class="dp-svg" viewBox="0 0 22 22"><polyline points="7,4 15,11 7,18"/></svg>
+  </div>
+</div>
+
+<div style="font-size:11px;color:#999;text-align:center">左右方向鍵 / A D　或左右滑動畫面轉彎（蛇會自動前進）</div>
+
+<div id="sg-ov">
+  <div id="sg-ov-box">
+    <h3>遊戲結束</h3>
+    <p id="sg-ov-msg"></p>
+    <input type="text" id="sg-name" maxlength="12" placeholder="輸入暱稱（最多12字）" autocomplete="off"/>
+    <div class="ov-btns">
+      <button id="btn-skip" style="color:#999">跳過</button>
+      <button id="btn-submit">記錄分數</button>
+    </div>
+  </div>
+</div>
+
+<div id="sg-rules">
+  <div id="sg-rules-box">
+    <h3>遊戲規則</h3>
+    <div class="r-row"><div class="r-icon" style="background:#E1F5EE;color:#0F6E56">→</div><div>視角固定在蛇頭後方跟隨前進，蛇會自動往前移動，只需按左／右方向鍵（或 A / D、左右滑動畫面）讓蛇相對轉彎。</div></div>
+    <div class="r-row"><div class="r-icon" style="background:#FAECE7;color:#993C1D">✕</div><div>撞邊界牆、撞到自己的身體，或（迷宮地圖）撞到迷宮牆壁，即遊戲結束。</div></div>
+    <div class="r-row"><div class="r-icon" style="background:#EDEAE3;color:#555">▦</div><div>可切換「空曠」或「迷宮」地圖：迷宮牆壁每次開始遊戲都會隨機重新產生。</div></div>
+    <div class="r-row"><div class="r-icon" style="background:#FAEEDA;color:#854F0B">↑</div><div>分數越高、速度越快，難度隨分數逐漸提升，共分 3 個等級：</div></div>
+    <div style="margin:0 0 10px 32px">
+      <div class="fl"><div class="fl-dot" style="background:#0F6E56"></div>Lv.1 正常 — 分數 0～50</div>
+      <div class="fl"><div class="fl-dot" style="background:#854F0B"></div>Lv.2 快速 — 分數 51～100</div>
+      <div class="fl"><div class="fl-dot" style="background:#993C1D"></div>Lv.3 極速 — 分數 101 以上</div>
+    </div>
+    <div class="r-row"><div class="r-icon" style="background:#E6F1FB;color:#185FA5">★</div><div>不同食物分值不同，稀有食物限時出現，快去搶！</div></div>
+    <div style="margin:10px 0">
+      <div class="fl"><div class="fl-dot" style="background:#D85A30"></div>橘色圓球 — 普通 +1（常駐）</div>
+      <div class="fl"><div class="fl-dot" style="background:#888780"></div>銀色圓球 — 銀色 +3（限時）</div>
+      <div class="fl"><div class="fl-dot" style="background:#BA7517;border-radius:2px"></div>金色八面體 — 金色 +5（限時）</div>
+      <div class="fl"><div class="fl-dot" style="background:#7F77DD;border-radius:2px"></div>紫色多面體 — 彩虹 +10（限時）</div>
+    </div>
+    <button id="btn-rules-close" style="width:100%;cursor:pointer;padding:8px;border-radius:8px;font-size:13px;margin-top:4px">關閉</button>
+  </div>
+</div>
+
+<div id="sg-lb">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 6px">
+    <span style="font-size:14px;font-weight:500">排行榜</span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:11px;color:#999">前 10 名</span>
+      <button id="btn-lb-clear" title="清除所有紀錄" style="font-size:11px;padding:2px 8px;border-radius:6px;cursor:pointer;color:#999">清除</button>
+    </div>
+  </div>
+  <div style="background:#fff;border:0.5px solid #e8e5de;border-radius:10px;overflow:hidden">
+    <ul id="sg-lb-ul"><li style="padding:14px;text-align:center;color:#999;font-size:13px">尚無紀錄</li></ul>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ===================== 基本設定（與 2D 版邏輯相同） ===================== */
+const COLS=22,ROWS=20;
+const CELL=1; // 3D 世界中每格邊長
+
+const THEMES=[
+  {head:'#1D9E75',body:'#5DCAA5',bg:'#eaf5f0',grid:'#cfe9dd',ink:'#085041',floor:'#dff2e9'},
+  {head:'#185FA5',body:'#378ADD',bg:'#e7f1fb',grid:'#c8def4',ink:'#042C53',floor:'#dcebf9'},
+  {head:'#534AB7',body:'#7F77DD',bg:'#eceafd',grid:'#d6d2f7',ink:'#26215C',floor:'#e4e1fb'},
+  {head:'#993C1D',body:'#D85A30',bg:'#fbeae2',grid:'#f0cdbc',ink:'#4A1B0C',floor:'#f7ddce'},
+  {head:'#5DCAA5',body:'#1D9E75',bg:'#141414',grid:'#2a2a2a',ink:'#9FE1CB',floor:'#1c1c1c'},
+];
+let ti=0,T=THEMES[0];
+
+const FTYPES=[
+  {type:'normal', pts:1, color:'#D85A30',r:0.19,prob:0.65,ttl:null},
+  {type:'silver', pts:3, color:'#B9B7AE',r:0.23,prob:0.22,ttl:200},
+  {type:'gold',   pts:5, color:'#E0A83A',r:0.25,prob:0.10,ttl:140},
+  {type:'rainbow',pts:10,color:'#9C8FF0',r:0.28,prob:0.03,ttl:90},
+];
+
+let snake,prevSnake,dir,nextDir,foods=[],score,best=0,running=false,loopId,tick=0;
+let blocked=false;
+let lastTickTime=0,curSpeedMs=160;
+let mapType='open',wallSet=new Set();
+
+const LS_KEY='snakeGame3D_lb_v1';
+function lbLoad(){
+  try{
+    const data=JSON.parse(localStorage.getItem(LS_KEY));
+    if(!Array.isArray(data)) return [];
+    return data.filter(e=>e&&typeof e.name==='string'&&typeof e.score==='number');
+  }catch(e){return[];}
+}
+function lbSave(data){try{localStorage.setItem(LS_KEY,JSON.stringify(data));}catch(e){}}
+let lb=lbLoad();
+
+const SPEED_LEVELS=[
+  {max:50, ms:220,t:'Lv.1 正常',bg:'#E1F5EE',c:'#0F6E56'},
+  {max:100,ms:175,t:'Lv.2 快速',bg:'#FAEEDA',c:'#854F0B'},
+  {max:Infinity,ms:135,t:'Lv.3 極速',bg:'#FAECE7',c:'#993C1D'},
+];
+function speedLevel(){
+  const s=(typeof score==='number')?score:0;
+  return SPEED_LEVELS.find(l=>s<=l.max);
+}
+function speedMs(){return speedLevel().ms;}
+function speedInfo(){const l=speedLevel();return{t:l.t,bg:l.bg,c:l.c};}
+function updSpeed(){
+  const s=speedInfo();const b=document.getElementById('sg-speed');
+  b.textContent=s.t;b.style.background=s.bg;b.style.color=s.c;
+}
+
+/* ===================== 座標轉換 ===================== */
+function wx(c){return (c-COLS/2+0.5)*CELL;}
+function wz(r){return (r-ROWS/2+0.5)*CELL;}
+
+/* ===================== Three.js 場景建置 ===================== */
+const canvas=document.getElementById('sg-canvas');
+const stage=document.getElementById('sg-stage');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.shadowMap.enabled=true;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(52,1,0.1,200);
+
+let hemi=new THREE.HemisphereLight(0xffffff,0x444444,0.9);
+scene.add(hemi);
+let dirLight=new THREE.DirectionalLight(0xffffff,0.9);
+dirLight.position.set(6,12,4);
+dirLight.castShadow=true;
+dirLight.shadow.mapSize.set(1024,1024);
+dirLight.shadow.camera.left=-14;dirLight.shadow.camera.right=14;
+dirLight.shadow.camera.top=14;dirLight.shadow.camera.bottom=-14;
+scene.add(dirLight);
+
+function makeGridTexture(th){
+  const c=document.createElement('canvas');c.width=512;c.height=Math.round(512*ROWS/COLS);
+  const cx=c.getContext('2d');
+  cx.fillStyle=th.floor;cx.fillRect(0,0,c.width,c.height);
+  cx.strokeStyle=th.grid;cx.lineWidth=1.4;
+  const cw=c.width/COLS,ch=c.height/ROWS;
+  for(let x=0;x<=COLS;x++){cx.beginPath();cx.moveTo(x*cw,0);cx.lineTo(x*cw,c.height);cx.stroke();}
+  for(let y=0;y<=ROWS;y++){cx.beginPath();cx.moveTo(0,y*ch);cx.lineTo(c.width,y*ch);cx.stroke();}
+  const tex=new THREE.CanvasTexture(c);
+  tex.anisotropy=4;
+  return tex;
+}
+
+let floorMesh,wallGroup;
+function buildBoard(){
+  if(floorMesh){scene.remove(floorMesh);floorMesh.geometry.dispose();floorMesh.material.dispose();}
+  const tex=makeGridTexture(T);
+  const geo=new THREE.PlaneGeometry(COLS*CELL,ROWS*CELL);
+  const mat=new THREE.MeshStandardMaterial({map:tex,roughness:0.9});
+  floorMesh=new THREE.Mesh(geo,mat);
+  floorMesh.rotation.x=-Math.PI/2;
+  floorMesh.receiveShadow=true;
+  scene.add(floorMesh);
+
+  if(wallGroup)scene.remove(wallGroup);
+  wallGroup=new THREE.Group();
+  const wallMat=new THREE.MeshStandardMaterial({color:T.head,roughness:0.6});
+  const wh=0.45,wt=0.22;
+  const wallDefs=[
+    [COLS*CELL+wt,wh,wt, 0, wh/2, -ROWS*CELL/2-wt/2],
+    [COLS*CELL+wt,wh,wt, 0, wh/2,  ROWS*CELL/2+wt/2],
+    [wt,wh,ROWS*CELL+wt, -COLS*CELL/2-wt/2, wh/2, 0],
+    [wt,wh,ROWS*CELL+wt,  COLS*CELL/2+wt/2, wh/2, 0],
+  ];
+  wallDefs.forEach(([sx,sy,sz,px,py,pz])=>{
+    const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),wallMat);
+    m.position.set(px,py,pz);m.castShadow=true;m.receiveShadow=true;
+    wallGroup.add(m);
+  });
+  scene.add(wallGroup);
+
+  scene.background=new THREE.Color(T.bg);
+  scene.fog=new THREE.Fog(new THREE.Color(T.bg).getHex(),18,34);
+}
+
+/* ---- 迷宮牆壁（隨機產生 / 3D 渲染）---- */
+function shadeColor(hex,percent){
+  const f=parseInt(hex.slice(1),16),t=percent<0?0:255,p=Math.abs(percent)/100;
+  const R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
+  return '#'+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+}
+/* 以「房間格 + 走廊格」的方式在格子地圖上生成迷宮：
+   房間位於偶數座標 (2i,2j)，彼此一定連通（生成樹涵蓋全部房間，保證沒有進不去的封閉空間）；
+   走廊格（房間之間的單一格連接點）永遠不會互相相鄰（最多只與 2 個對角格相鄰），
+   對角格則只在四周相鄰牆壁數 ≤2 時才會設為牆——讓牆壁能沿線／轉角自然連接成一條線，
+   但不會出現 3 面以上牆壁交會的厚重路口，因此牆壁厚度仍維持在 1 格。
+   接著以「整條牆」為單位隨機保留／整條拆除來降低密度（不會把牆拆成碎片）；
+   再消除所有「只有一個出口」的死巷——蛇不能迴轉，單一出口的死巷等於必死陷阱（死局），
+   一律多打通一側，確保任何可站的格子至少有兩個出口；
+   最後（在出生點安全區清空之後）移除所有長度 <4 的牆（含單一孤立方塊），
+   確保留下的每一段牆長度都大於 3 格。 */
+function wallComponents(walls){
+  const dirs4=[[1,0],[-1,0],[0,1],[0,-1]];
+  const seen=new Set(),comps=[];
+  walls.forEach(k=>{
+    if(seen.has(k))return;
+    const comp=[k];seen.add(k);
+    const q=[k];
+    while(q.length){
+      const cur=q.pop();
+      const[cx,cy]=cur.split('_').map(Number);
+      dirs4.forEach(([dx,dy])=>{
+        const nk=(cx+dx)+'_'+(cy+dy);
+        if(walls.has(nk)&&!seen.has(nk)){seen.add(nk);comp.push(nk);q.push(nk);}
+      });
+    }
+    comps.push(comp);
+  });
+  return comps;
+}
+function genMaze(){
+  const RC=Math.floor(COLS/2),RR=Math.floor(ROWS/2);
+  const visited=Array.from({length:RC},()=>Array(RR).fill(false));
+  const openCorridor=new Set();
+  const si=Math.floor(RC/2),sj=Math.floor(RR/2);
+  visited[si][sj]=true;
+  const stack=[[si,sj]];
+  while(stack.length){
+    const[ci,cj]=stack[stack.length-1];
+    const nbrs=[];
+    for(const[di,dj] of[[1,0],[-1,0],[0,1],[0,-1]]){
+      const ni=ci+di,nj=cj+dj;
+      if(ni>=0&&ni<RC&&nj>=0&&nj<RR&&!visited[ni][nj])nbrs.push([ni,nj]);
+    }
+    if(nbrs.length){
+      const[ni,nj]=nbrs[Math.floor(Math.random()*nbrs.length)];
+      visited[ni][nj]=true;
+      openCorridor.add((ci+ni)+'_'+(cj+nj));
+      stack.push([ni,nj]);
+    }else stack.pop();
+  }
+  const walls=new Set();
+  for(let i=0;i<RC-1;i++)for(let j=0;j<RR;j++){
+    const x=2*i+1,y=2*j;
+    if(!openCorridor.has(x+'_'+y))walls.add(x+'_'+y);
+  }
+  for(let i=0;i<RC;i++)for(let j=0;j<RR-1;j++){
+    const x=2*i,y=2*j+1;
+    if(!openCorridor.has(x+'_'+y))walls.add(x+'_'+y);
+  }
+  for(let i=0;i<RC-1;i++)for(let j=0;j<RR-1;j++){
+    const dx=2*i+1,dy=2*j+1;
+    const nbrKeys=[(2*i)+'_'+(2*j+1),(2*i+2)+'_'+(2*j+1),(2*i+1)+'_'+(2*j),(2*i+1)+'_'+(2*j+2)];
+    const wallNbrs=nbrKeys.filter(k=>walls.has(k));
+    if(wallNbrs.length<=2){
+      walls.add(dx+'_'+dy);
+    }else if(wallNbrs.length===nbrKeys.length){
+      walls.delete(nbrKeys[Math.floor(Math.random()*nbrKeys.length)]);
+    }
+  }
+  const dirs4=[[1,0],[-1,0],[0,1],[0,-1]];
+  // 降低牆壁密度：以整條牆（連通鏈）為單位隨機保留，不逐格拆，避免把長牆拆成碎片
+  const CHAIN_KEEP_PROB=0.6;
+  wallComponents(walls).forEach(comp=>{
+    if(Math.random()>CHAIN_KEEP_PROB)comp.forEach(k=>walls.delete(k));
+  });
+  // 消除單一出口死巷：蛇無法迴轉，只有 1 個出口＝必死陷阱，強制多開一側（開牆只會增加連通性，不影響厚度）
+  const openNeighborCount=(x,y)=>dirs4.reduce((c,[dx,dy])=>{
+    const nx=x+dx,ny=y+dy;
+    if(nx<0||nx>=COLS||ny<0||ny>=ROWS)return c;
+    return c+(walls.has(nx+'_'+ny)?0:1);
+  },0);
+  let changed=true,guard=0;
+  while(changed&&guard++<2000){
+    changed=false;
+    for(let x=0;x<COLS;x++)for(let y=0;y<ROWS;y++){
+      const k=x+'_'+y;
+      if(walls.has(k))continue;
+      if(openNeighborCount(x,y)>=2)continue;
+      const shuffled=dirs4.slice().sort(()=>Math.random()-0.5);
+      for(const[dx,dy] of shuffled){
+        const nx=x+dx,ny=y+dy;
+        if(nx<0||nx>=COLS||ny<0||ny>=ROWS)continue;
+        const nk=nx+'_'+ny;
+        if(walls.has(nk)){walls.delete(nk);changed=true;break;}
+      }
+    }
+  }
+  const mx=Math.floor(COLS/2),my=Math.floor(ROWS/2);
+  for(let x=Math.max(0,mx-4);x<=Math.min(COLS-1,mx+5);x++){
+    for(let y=Math.max(0,my-2);y<=Math.min(ROWS-1,my+2);y++){
+      walls.delete(x+'_'+y);
+    }
+  }
+  // 移除孤立方塊與過短的牆（必須放在最後一步：安全區清空可能把長牆切成短段，要在那之後才能過濾）
+  const MIN_WALL_LEN=4;
+  wallComponents(walls).forEach(comp=>{
+    if(comp.length<MIN_WALL_LEN)comp.forEach(k=>walls.delete(k));
+  });
+  return walls;
+}
+let mazeWallGroup=null;
+const mazeWallGeo=new THREE.BoxGeometry(CELL,0.9,CELL);
+function buildMazeWalls(){
+  if(mazeWallGroup){scene.remove(mazeWallGroup);}
+  mazeWallGroup=new THREE.Group();
+  if(wallSet.size){
+    const mat=new THREE.MeshStandardMaterial({color:shadeColor(T.head,-30),roughness:0.7});
+    wallSet.forEach(key=>{
+      const[x,y]=key.split('_').map(Number);
+      const m=new THREE.Mesh(mazeWallGeo,mat);
+      m.position.set(wx(x),0.45,wz(y));
+      m.castShadow=true;m.receiveShadow=true;
+      mazeWallGroup.add(m);
+    });
+  }
+  scene.add(mazeWallGroup);
+}
+
+/* ---- 蛇身 mesh pool ---- */
+let snakeMeshes=[];
+const headGeo=new THREE.BoxGeometry(CELL*0.86,CELL*0.86,CELL*0.86);
+const bodyGeo=new THREE.BoxGeometry(CELL*0.74,CELL*0.62,CELL*0.74);
+function snakeMaterials(){
+  return {
+    head:new THREE.MeshStandardMaterial({color:T.head,roughness:0.4,metalness:0.1}),
+    body:new THREE.MeshStandardMaterial({color:T.body,roughness:0.55}),
+  };
+}
+let snakeMats=snakeMaterials();
+function rebuildSnakeMats(){
+  snakeMats=snakeMaterials();
+  snakeMeshes.forEach((m,i)=>{m.material=i===0?snakeMats.head:snakeMats.body;});
+}
+function syncSnakeMeshCount(n){
+  while(snakeMeshes.length<n){
+    const idx=snakeMeshes.length;
+    const mesh=new THREE.Mesh(idx===0?headGeo:bodyGeo, idx===0?snakeMats.head:snakeMats.body);
+    mesh.castShadow=true;mesh.receiveShadow=true;
+    scene.add(mesh);snakeMeshes.push(mesh);
+  }
+  while(snakeMeshes.length>n){
+    const mesh=snakeMeshes.pop();scene.remove(mesh);
+  }
+}
+
+/* ---- 食物 mesh pool ---- */
+let foodMeshes={}; // key -> {mesh, ring}
+function foodGeometry(type){
+  const ft=FTYPES.find(t=>t.type===type);
+  if(type==='normal')return new THREE.SphereGeometry(ft.r,16,12);
+  if(type==='silver')return new THREE.SphereGeometry(ft.r,18,14);
+  if(type==='gold')return new THREE.OctahedronGeometry(ft.r,0);
+  return new THREE.IcosahedronGeometry(ft.r,0);
+}
+function foodKey(f){return f.x+'_'+f.y+'_'+f.type;}
+function syncFoodMeshes(){
+  const liveKeys=new Set(foods.map(foodKey));
+  Object.keys(foodMeshes).forEach(k=>{
+    if(!liveKeys.has(k)){
+      const o=foodMeshes[k];
+      scene.remove(o.mesh);o.mesh.geometry.dispose();o.mesh.material.dispose();
+      if(o.ring){scene.remove(o.ring);o.ring.geometry.dispose();o.ring.material.dispose();}
+      delete foodMeshes[k];
+    }
+  });
+  foods.forEach(f=>{
+    const k=foodKey(f);
+    if(!foodMeshes[k]){
+      const ft=FTYPES.find(t=>t.type===f.type);
+      const mat=new THREE.MeshStandardMaterial({color:ft.color,roughness:0.3,metalness:0.25,emissive:new THREE.Color(ft.color).multiplyScalar(0.15)});
+      const mesh=new THREE.Mesh(foodGeometry(f.type),mat);
+      mesh.castShadow=true;
+      mesh.position.set(wx(f.x),ft.r+0.05,wz(f.y));
+      scene.add(mesh);
+      let ring=null;
+      if(ft.ttl){
+        const rg=new THREE.RingGeometry(ft.r+0.08,ft.r+0.13,32,1,0,Math.PI*2);
+        const rm=new THREE.MeshBasicMaterial({color:ft.color,side:THREE.DoubleSide,transparent:true,opacity:0.55});
+        ring=new THREE.Mesh(rg,rm);
+        ring.rotation.x=-Math.PI/2;
+        ring.position.set(wx(f.x),0.03,wz(f.y));
+        scene.add(ring);
+      }
+      foodMeshes[k]={mesh,ring};
+    }
+  });
+}
+
+buildBoard();
+buildMazeWalls();
+
+/* ===================== 相機（跟隨蛇頭 / 待機環繞） ===================== */
+const camPos=new THREE.Vector3(0,14,16);
+const camLook=new THREE.Vector3(0,0,0);
+camera.position.copy(camPos);
+camera.lookAt(camLook);
+
+function updateCamera(t){
+  let desiredPos,desiredLook;
+  if(running&&snake&&snake.length){
+    const h=snake[0];
+    const hx=wx(h.x),hz=wz(h.y);
+    const ddx=dir.x*CELL,ddz=dir.y*CELL;
+    desiredPos=new THREE.Vector3(hx-ddx*4.2,3.6,hz-ddz*4.2);
+    desiredLook=new THREE.Vector3(hx+ddx*2.2,0.3,hz+ddz*2.2);
+  }else{
+    const ang=t*0.00012;
+    const R=Math.max(COLS,ROWS)*0.62;
+    desiredPos=new THREE.Vector3(Math.cos(ang)*R,12,Math.sin(ang)*R);
+    desiredLook=new THREE.Vector3(0,0,0);
+  }
+  camPos.lerp(desiredPos,0.06);
+  camLook.lerp(desiredLook,0.09);
+  camera.position.copy(camPos);
+  camera.lookAt(camLook);
+}
+
+/* ===================== 版面尺寸 ===================== */
+function resize(){
+  const w=Math.min(window.innerWidth-32,440);
+  const h=Math.round(w*0.8);
+  canvas.style.width=w+'px';canvas.style.height=h+'px';
+  stage.style.width=w+'px';stage.style.height=h+'px';
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h;camera.updateProjectionMatrix();
+  ['sg-topbar','sg-lb'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.maxWidth=w+'px';
+  });
+}
+resize();
+window.addEventListener('resize',resize);
+
+/* ===================== 主題切換 ===================== */
+function buildThemes(){
+  const row=document.getElementById('sg-theme-row');row.innerHTML='';
+  THEMES.forEach((th,i)=>{
+    const b=document.createElement('div');b.className='sg-tb'+(i===ti?' active':'');
+    b.style.background=th.head;
+    b.addEventListener('click',()=>{
+      ti=i;T=THEMES[i];
+      buildBoard();buildMazeWalls();rebuildSnakeMats();buildThemes();
+      dirLight.intensity=T===THEMES[4]?0.7:0.9;
+    });
+    row.appendChild(b);
+  });
+}
+
+/* ===================== 地圖切換（空曠 / 迷宮） ===================== */
+function buildMapRow(){
+  const row=document.getElementById('sg-map-row');row.innerHTML='';
+  [{key:'open',label:'空曠'},{key:'maze',label:'迷宮'}].forEach(m=>{
+    const b=document.createElement('button');
+    b.className='map-btn'+(m.key===mapType?' active':'');
+    b.textContent=m.label;
+    b.addEventListener('click',()=>{
+      if(running)return;
+      mapType=m.key;
+      wallSet=mapType==='maze'?genMaze():new Set();
+      buildMazeWalls();
+      buildMapRow();
+    });
+    row.appendChild(b);
+  });
+}
+
+/* ===================== 遊戲邏輯（與 2D 版相同規則） ===================== */
+function pickFood(){let a=0,r=Math.random();for(const f of FTYPES){a+=f.prob;if(r<a)return f;}return FTYPES[0];}
+function spawn(forceN){
+  const occ=[...snake,...foods.map(f=>({x:f.x,y:f.y}))];
+  let pos,t=0;
+  do{pos={x:Math.floor(Math.random()*COLS),y:Math.floor(Math.random()*ROWS)};t++;}
+  while((occ.some(s=>s.x===pos.x&&s.y===pos.y)||wallSet.has(pos.x+'_'+pos.y))&&t<300);
+  const ft=forceN?FTYPES[0]:pickFood();
+  foods.push({...pos,type:ft.type,life:ft.ttl||9999,maxLife:ft.ttl||9999});
+}
+function ensureNormal(){if(!foods.some(f=>f.type==='normal'))spawn(true);}
+
+function init(){
+  const mx=Math.floor(COLS/2),my=Math.floor(ROWS/2);
+  snake=[{x:mx,y:my},{x:mx-1,y:my},{x:mx-2,y:my}];
+  prevSnake=snake.map(s=>({x:s.x,y:s.y}));
+  dir={x:1,y:0};nextDir={x:1,y:0};score=0;foods=[];tick=0;
+  document.getElementById('sg-score').textContent=0;
+  wallSet=mapType==='maze'?genMaze():new Set();
+  buildMazeWalls();
+  spawn(true);
+  syncSnakeMeshCount(snake.length);
+  syncFoodMeshes();
+}
+
+function doTick(){
+  tick++;dir=nextDir;
+  const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+  if(h.x<0||h.x>=COLS||h.y<0||h.y>=ROWS||snake.some(s=>s.x===h.x&&s.y===h.y)||wallSet.has(h.x+'_'+h.y)){
+    clearInterval(loopId);running=false;showGameOver();return;
+  }
+  prevSnake=snake.map(s=>({x:s.x,y:s.y}));
+  snake.unshift(h);
+  const ei=foods.findIndex(f=>f.x===h.x&&f.y===h.y);
+  if(ei>=0){
+    const pts=FTYPES.find(t=>t.type===foods[ei].type).pts;
+    score+=pts;
+    if(score>best){best=score;document.getElementById('sg-best').textContent=best;}
+    document.getElementById('sg-score').textContent=score;
+    foods.splice(ei,1);updSpeed();clearInterval(loopId);curSpeedMs=speedMs();loopId=setInterval(doTick,curSpeedMs);spawn(false);ensureNormal();
+  }else{snake.pop();}
+  foods.forEach(f=>{if(f.maxLife<9999)f.life--;});
+  foods=foods.filter(f=>f.life>0);ensureNormal();
+  if(tick%30===0&&foods.length<3&&Math.random()<0.4)spawn(false);
+  lastTickTime=performance.now();
+  syncSnakeMeshCount(snake.length);
+  syncFoodMeshes();
+}
+
+function start(){
+  if(blocked)return;
+  clearInterval(loopId);
+  document.getElementById('sg-ov').classList.remove('show');
+  document.getElementById('sg-idle').style.display='none';
+  init();running=true;
+  document.getElementById('btn-start').textContent='重新開始';
+  updSpeed();
+  curSpeedMs=speedMs();lastTickTime=performance.now();
+  loopId=setInterval(doTick,curSpeedMs);
+}
+
+function showGameOver(){
+  blocked=true;
+  document.getElementById('sg-ov-msg').textContent=`本局得分：${score}　最高：${best}`;
+  document.getElementById('sg-name').value='';
+  document.getElementById('sg-ov').classList.add('show');
+  document.getElementById('sg-idle').style.display='flex';
+  setTimeout(()=>document.getElementById('sg-name').focus(),150);
+}
+function closeGameOver(){document.getElementById('sg-ov').classList.remove('show');blocked=false;}
+function submitScore(skip){
+  const raw=document.getElementById('sg-name').value.trim();
+  if(!skip&&raw){
+    lb.push({name:raw.slice(0,12),score});lb.sort((a,b)=>b.score-a.score);lb=lb.slice(0,10);
+    lbSave(lb);renderLB();
+  }
+  closeGameOver();
+}
+
+const nameInput=document.getElementById('sg-name');
+nameInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitScore(false);}e.stopPropagation();});
+nameInput.addEventListener('keyup',e=>e.stopPropagation());
+nameInput.addEventListener('keypress',e=>e.stopPropagation());
+
+document.getElementById('btn-submit').addEventListener('click',()=>submitScore(false));
+document.getElementById('btn-skip').addEventListener('click',()=>submitScore(true));
+document.getElementById('btn-rules').addEventListener('click',()=>document.getElementById('sg-rules').classList.add('show'));
+document.getElementById('btn-rules-close').addEventListener('click',()=>document.getElementById('sg-rules').classList.remove('show'));
+document.getElementById('btn-start').addEventListener('click',start);
+document.getElementById('btn-lb-clear').addEventListener('click',()=>{
+  if(confirm('確定要清除所有排行紀錄嗎？')){lb=[];lbSave(lb);renderLB();}
+});
+
+/* 第一人稱追蹤視角下，方向鍵改為「相對轉向」：左/右鍵讓蛇相對目前前進方向左轉／右轉 90 度，
+   不再是絕對的上下左右，操作時只需左右鍵即可（上/下鍵僅用於開始遊戲、直行不轉彎）。 */
+function turnLeft(d){return{x:d.y,y:-d.x};}
+function turnRight(d){return{x:-d.y,y:d.x};}
+
+document.addEventListener('keydown',e=>{
+  if(blocked)return;
+  const k=e.key.toLowerCase();
+  const startKeys=['arrowup','arrowdown','arrowleft','arrowright','w','a','s','d'];
+  if(!running){if(startKeys.includes(k)){start();return;}}
+  if(k==='arrowleft'||k==='a'){nextDir=turnLeft(dir);e.preventDefault();}
+  else if(k==='arrowright'||k==='d'){nextDir=turnRight(dir);e.preventDefault();}
+  else if(k==='arrowup'||k==='w'||k==='arrowdown'||k==='s'){e.preventDefault();}
+});
+
+document.getElementById('dp-left').addEventListener('pointerdown',e=>{
+  e.preventDefault();if(blocked)return;if(!running){start();return;}
+  nextDir=turnLeft(dir);
+},{passive:false});
+document.getElementById('dp-right').addEventListener('pointerdown',e=>{
+  e.preventDefault();if(blocked)return;if(!running){start();return;}
+  nextDir=turnRight(dir);
+},{passive:false});
+let tx=0,ty=0;
+canvas.addEventListener('touchstart',e=>{if(blocked)return;tx=e.touches[0].clientX;ty=e.touches[0].clientY;e.preventDefault();},{passive:false});
+canvas.addEventListener('touchend',e=>{
+  if(blocked)return;if(!running){start();return;}
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)<10&&Math.abs(dy)<10)return;
+  if(Math.abs(dx)>Math.abs(dy)){nextDir=dx>0?turnRight(dir):turnLeft(dir);}
+  e.preventDefault();
+},{passive:false});
+canvas.addEventListener('click',()=>{if(!running&&!blocked)start();});
+
+function renderLB(){
+  const ul=document.getElementById('sg-lb-ul');
+  if(!lb.length){ul.innerHTML='<li style="padding:14px;text-align:center;color:#999;font-size:13px">尚無紀錄</li>';return;}
+  const M=['🥇','🥈','🥉'];
+  ul.innerHTML=lb.map((e,i)=>{
+    const badge=e.score>=20?`<span class="lb-badge" style="background:#FAEEDA;color:#854F0B">高手</span>`:e.score>=10?`<span class="lb-badge" style="background:#E6F1FB;color:#185FA5">進階</span>`:'';
+    return `<li><span class="lb-rank">${M[i]||i+1}</span><span class="lb-name">${e.name}</span>${badge}<span class="lb-score">${e.score}</span></li>`;
+  }).join('');
+}
+
+/* ===================== 動畫渲染迴圈（平滑移動 / 旋轉 / 待機環繞） ===================== */
+function frame(t){
+  requestAnimationFrame(frame);
+  updateCamera(t);
+
+  if(snake&&snake.length){
+    const alpha=Math.min(1,(performance.now()-lastTickTime)/Math.max(curSpeedMs,1));
+    for(let i=0;i<snakeMeshes.length;i++){
+      const cur=snake[i];
+      const prev=(i===0)?prevSnake[0]:(prevSnake[i-1]||prevSnake[prevSnake.length-1]||cur);
+      const px=prev?wx(prev.x):wx(cur.x), pz=prev?wz(prev.y):wz(cur.y);
+      const cx=wx(cur.x), cz=wz(cur.y);
+      const ix=px+(cx-px)*alpha, iz=pz+(cz-pz)*alpha;
+      const mesh=snakeMeshes[i];
+      mesh.position.set(ix, i===0?0.5:0.4, iz);
+      if(i===0){
+        mesh.rotation.y=Math.atan2(dir.x,dir.y);
+      }
+    }
+  }
+
+  Object.keys(foodMeshes).forEach(k=>{
+    const o=foodMeshes[k];
+    const f=foods.find(ff=>foodKey(ff)===k);
+    if(!f)return;
+    const ft=FTYPES.find(tt=>tt.type===f.type);
+    if(f.type!=='normal')o.mesh.rotation.y=t*0.0015;
+    if(f.type==='rainbow')o.mesh.rotation.x=t*0.001;
+    o.mesh.position.y=ft.r+0.05+Math.sin(t*0.003+ (f.x+f.y))*0.05;
+    if(o.ring&&ft.ttl){
+      const frac=f.life/f.maxLife;
+      o.ring.material.opacity=0.35+ (frac<0.25?(Math.sin(t*0.02)*0.25+0.25):0.15);
+      o.ring.scale.setScalar(0.6+frac*0.4);
+    }
+  });
+
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(frame);
+
+buildThemes();buildMapRow();updSpeed();renderLB();
+</script>
+</body>
+</html>
