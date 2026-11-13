@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>清邁旅遊泰語</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+Thai+Looped:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F4FA; --surface:#FFFFFF; --sunk:#E8EAF4; --ink:#1A1F3D; --muted:#5A6083; --line:#D5D8E8;
+  --indigo:#2C3A8F; --indigo-ink:#FFFFFF; --red:#C3352B; --gold:#9A6B00; --good:#1E8A5A; --bad:#C3352B;
+  --t-mid:#6B7090; --t-low:#2563C9; --t-fall:#8B3FB0; --t-high:#D06A00; --t-rise:#14905F;
+  --thai:"Noto Sans Thai Looped","Noto Sans Thai","Thonburi","Leelawadee UI","Tahoma",sans-serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#13162B; --surface:#1C2040; --sunk:#262B52; --ink:#ECEEFA; --muted:#A3A8C9; --line:#343A68;
+    --indigo:#8E9BFF; --indigo-ink:#13162B; --red:#FF7B6F; --gold:#E7B64A; --good:#4CD39A; --bad:#FF7B6F;
+    --t-mid:#B5B9D6; --t-low:#7FB0FF; --t-fall:#D59BFF; --t-high:#FFB061; --t-rise:#5FE0A8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13162B; --surface:#1C2040; --sunk:#262B52; --ink:#ECEEFA; --muted:#A3A8C9; --line:#343A68;
+  --indigo:#8E9BFF; --indigo-ink:#13162B; --red:#FF7B6F; --gold:#E7B64A; --good:#4CD39A; --bad:#FF7B6F;
+  --t-mid:#B5B9D6; --t-low:#7FB0FF; --t-fall:#D59BFF; --t-high:#FFB061; --t-rise:#5FE0A8;
+  color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:84px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--indigo);outline-offset:2px;border-radius:6px}
+.wrap{max-width:720px;margin:0 auto;padding:20px 18px 32px}
+h1,h2,h3{margin:0;line-height:1.3}
+h2{font-size:1.35rem;font-weight:900;letter-spacing:.01em}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:.4em 0}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.th{font-family:var(--thai)}
+section{margin-top:34px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+
+/* tabs */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 8px;text-decoration:none;color:var(--muted);font-size:.78rem;font-weight:500}
+nav.tabs a svg{width:22px;height:22px}
+nav.tabs a[aria-current="page"]{color:var(--red);font-weight:700}
+@media (min-width:860px){
+  body{padding-bottom:0}
+  nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);bottom:auto;border-top:0;border-bottom:1px solid var(--line)}
+  nav.tabs a{flex-direction:row;justify-content:center;gap:8px;font-size:.95rem;padding:14px 4px}
+  body::before{background:var(--surface)}
+}
+
+/* hero */
+.hero{padding-top:18px}
+.hero .greet{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.hero .big{font-family:var(--thai);font-weight:800;font-size:clamp(4rem,17vw,6.6rem);line-height:1.05;color:var(--indigo);letter-spacing:-.01em}
+.hero .rom{font-size:1.5rem;margin-top:4px}
+.hero .lead{font-size:1.15rem;margin-top:10px}
+.trip{margin-top:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.95rem}
+.trip strong{font-size:1.6rem;color:var(--red);font-weight:900;line-height:1}
+.trip input{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+
+/* tone */
+.t-mid{color:var(--t-mid)} .t-low{color:var(--t-low)} .t-fall{color:var(--t-fall)} .t-high{color:var(--t-high)} .t-rise{color:var(--t-rise)}
+.rom{font-family:var(--sans);font-weight:500;letter-spacing:.01em}
+.rom .sep{color:var(--muted);opacity:.6}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.85rem;margin-top:8px}
+.legend span b{font-weight:700}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:999px;padding:10px 18px;font-weight:700;background:var(--red);color:#fff;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.indigo{background:var(--indigo);color:var(--indigo-ink)}
+.btn.sm{padding:6px 12px;font-size:.88rem}
+.btn:disabled{opacity:.45;cursor:default}
+.iconbtn{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);display:inline-grid;place-items:center;color:var(--ink);font-size:.8rem;font-weight:700;flex:none}
+.iconbtn svg{width:18px;height:18px}
+.iconbtn.play{background:var(--red);border-color:var(--red);color:#fff}
+.iconbtn.on{background:var(--good);border-color:var(--good);color:#fff}
+.playbig{width:64px;height:64px;border-radius:50%;border:0;background:var(--red);color:#fff;display:grid;place-items:center;margin-bottom:14px}
+.playbig svg{width:28px;height:28px}
+.seg{display:inline-flex;background:var(--sunk);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-weight:600;font-size:.9rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+
+/* plan */
+.days{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:thin}
+.days button{flex:none;width:42px;height:48px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;font-size:.95rem}
+.days button small{font-size:.62rem;font-weight:500;color:var(--muted)}
+.days button.today{border-color:var(--red)}
+.days button[aria-pressed="true"]{background:var(--indigo);color:var(--indigo-ink);border-color:var(--indigo)}
+.days button[aria-pressed="true"] small{color:inherit}
+.days button.done{background:var(--sunk)}
+.plan{background:var(--surface);border-radius:16px;padding:18px 18px 8px;border-left:6px solid var(--red)}
+.plan h3{font-size:1.2rem}
+.task{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.task:first-of-type{border-top:0}
+.task input{width:22px;height:22px;accent-color:var(--good);flex:none}
+.task label{flex:1}
+.task.is-done label{text-decoration:line-through;color:var(--muted)}
+
+/* progress list */
+.sclist{display:grid;gap:0;background:var(--surface);border-radius:14px;overflow:hidden}
+.scrow{display:flex;align-items:center;gap:14px;padding:14px 16px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;width:100%}
+.scrow:first-child{border-top:0}
+.scrow .ic{font-size:1.6rem;width:36px;text-align:center}
+.scrow .nm{flex:1;min-width:0}
+.scrow .nm b{display:block}
+.bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--good);border-radius:3px}
+.scrow .cnt{font-size:.85rem;color:var(--muted);white-space:nowrap}
+
+/* lesson */
+.back{border:0;background:none;color:var(--muted);padding:4px 0;font-weight:600;display:inline-flex;gap:4px;align-items:center}
+.lesson-top{display:flex;align-items:center;gap:14px;margin:8px 0 6px}
+.lesson-top .ic{font-size:2.6rem}
+.note{background:var(--sunk);border-radius:12px;padding:12px 14px;font-size:.92rem;margin:14px 0}
+.note .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:8px}
+.phl{background:var(--surface);border-radius:14px}
+.ph{display:flex;gap:12px;padding:16px;border-top:1px solid var(--line)}
+.ph:first-child{border-top:0}
+.ph .main{flex:1;min-width:0}
+.ph .thx{font-family:var(--thai);font-size:1.55rem;font-weight:600;line-height:1.35;word-break:break-word}
+.pt{font-size:.95rem;color:var(--gold);font-weight:600;margin-left:6px;white-space:nowrap}
+.ph .rom{font-size:1.02rem}
+.ph .rom .ptr{color:var(--gold);font-weight:500;font-size:.9rem}
+.ph .mean{font-weight:700;margin-top:2px}
+.ph .zh{font-size:.88rem;color:var(--muted)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--gold);border:1px solid currentColor;border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:2px}
+.ph .act{display:flex;flex-direction:column;gap:8px}
+
+/* practice */
+.modes{display:grid;gap:10px}
+.mode{display:flex;gap:14px;align-items:center;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:16px}
+.mode .ic{font-size:1.8rem}
+.mode b{display:block;font-size:1.05rem}
+.scope{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.scope select{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;max-width:100%}
+.card{background:var(--surface);border-radius:20px;padding:30px 22px;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
+.card .q{font-size:1.7rem;font-weight:900}
+.card .thq{font-family:var(--thai);font-size:2.4rem;font-weight:600;line-height:1.3}
+.card .rom{font-size:1.25rem}
+.counter{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin:12px 2px}
+.actions{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;font-size:1.05rem}
+.opt .th{font-size:1.3rem}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.score{font-size:3.4rem;font-weight:900;color:var(--indigo);line-height:1}
+
+/* tools */
+.bigcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.bigcard{border:0;background:var(--surface);border-radius:14px;padding:14px;text-align:left;min-height:88px}
+.bigcard .th{font-size:1.15rem;font-weight:600;display:block;line-height:1.35}
+.bigcard .zh{font-size:.85rem;color:var(--muted)}
+.panel{background:var(--surface);border-radius:14px;padding:16px}
+.field{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.field input{border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;font-size:1.1rem;width:140px}
+.numout .thx{font-family:var(--thai);font-size:1.6rem;font-weight:600;margin-top:10px;word-break:break-word}
+.search{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:11px 16px;margin-bottom:10px}
+.tips{margin:0;padding-left:1.2em}
+.tips li{margin:.5em 0}
+.emerg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.emerg a{background:var(--surface);border-radius:12px;padding:12px;text-decoration:none;color:var(--ink);text-align:center}
+.emerg b{display:block;font-size:1.5rem;color:var(--red)}
+
+/* overlay */
+.ov{position:fixed;inset:0;z-index:50;background:#FFFFFF;color:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(24px + env(safe-area-inset-bottom,0px));text-align:center}
+.ov .huge{font-family:var(--thai);font-weight:800;font-size:clamp(2.6rem,11vw,5.5rem);line-height:1.3}
+.ov .zh{font-size:1.1rem;color:#555;margin-top:12px}
+.ov textarea{margin-top:18px;width:min(560px,100%);font-size:1.6rem;border:2px solid #ccc;border-radius:12px;padding:12px;font-family:var(--thai);color:#111;background:#fff}
+.ov .bar2{display:flex;gap:10px;margin-top:24px}
+.ov .btn.ghost{color:#111;border-color:#bbb}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.92rem;z-index:60;max-width:90vw}
+@media (prefers-reduced-motion:no-preference){
+  .card{animation:pop .22s ease-out}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<main class="wrap" id="app" aria-live="polite"></main>
+<nav class="tabs" aria-label="主選單"><div class="in" id="tabs"></div></nav>
+<div id="ovroot"></div>
+<script>
+/* ---------- 課程資料：[泰文, 羅馬拼音, 中文近似音, 意思, 句尾(0無/1敘述/2問句), 標籤] ---------- */
+const SC=[
+{id:'greet',name:'禮貌與打招呼',icon:'🙏',items:[
+['สวัสดี','sà-wàt-dii','沙哇低','你好／再見',1],
+['ขอบคุณ','khɔ̀ɔp-khun','摳坤','謝謝',1],
+['ขอบคุณมาก','khɔ̀ɔp-khun-mâak','摳坤 罵','非常謝謝',1],
+['ขอโทษ','khɔ̌ɔ-thôot','可 拖','對不起／不好意思',1],
+['ไม่เป็นไร','mâi-pen-rai','麥 奔萊','沒關係／不客氣',1],
+['ใช่','châi','柴','是／對',1],
+['ไม่ใช่','mâi-châi','麥 柴','不是',1],
+['ได้','dâai','代','可以',1],
+['ไม่ได้','mâi-dâai','麥 代','不行',1],
+['ไม่เอา','mâi-ao','麥 凹','不要',1],
+['ไม่เข้าใจ','mâi-khâo-jai','麥 靠摘','我聽不懂',1],
+['พูดไทยไม่ได้','phûut-thai-mâi-dâai','撲 泰 麥代','我不會說泰語',1],
+['พูดอังกฤษได้ไหม','phûut-ang-krìt-dâai-mǎi','撲 昂葛利 代埋','你會說英文嗎？',2],
+['พูดช้าๆ หน่อย','phûut-cháa-cháa-nɔ̀i','撲 恰恰 挪伊','請說慢一點',1],
+['มาจากไต้หวัน','maa-jàak-tâi-wǎn','媽甲 代灣','我從台灣來',1],
+['ยินดีที่ได้รู้จัก','yin-dii-thîi-dâai-rúu-jàk','因低 替代 入甲','很高興認識你',1],
+['โชคดี','chôok-dii','秋低','祝你好運',1],
+['สวัสดีเจ้า','sà-wàt-dii-jâo','沙哇低 照','你好（北泰語氣，多為女性使用）',0,'北泰方言'],
+['ขอบใจ๋เจ้า','khɔ̀ɔp-jǎi-jâo','摳摘 照','謝謝（北泰說法）',0,'北泰方言'],
+['ลำแต้ๆ','lam-tɛ̂ɛ-tɛ̂ɛ','藍 爹爹','真好吃（北泰說法）',0,'北泰方言']]},
+{id:'money',name:'數字與金錢',icon:'💰',items:[
+['ศูนย์','sǔun','順','0',0],['หนึ่ง','nʉ̀ng','能','1',0],['สอง','sɔ̌ɔng','鬆','2',0],['สาม','sǎam','三','3',0],
+['สี่','sìi','細','4',0],['ห้า','hâa','哈','5',0],['หก','hòk','齁','6',0],['เจ็ด','jèt','摘','7',0],
+['แปด','pɛ̀ɛt','憋','8',0],['เก้า','kâo','告','9',0],['สิบ','sìp','戲','10',0],['ยี่สิบ','yîi-sìp','億 戲','20',0],
+['ร้อย','rɔ́ɔi','若伊','100',0],['พัน','phan','潘','1,000',0],
+['เท่าไหร่','thâo-rài','掏萊','多少錢？',2],
+['แพงไป','phɛɛng-pai','偏 掰','太貴了',1],
+['ลดได้ไหม','lót-dâai-mǎi','洛 代埋','可以算便宜一點嗎？',2],
+['ร้อยบาทได้ไหม','rɔ́ɔi-bàat-dâai-mǎi','若伊爸 代埋','一百泰銖可以嗎？',2],
+['ช่วยเขียนให้หน่อย','chûai-khǐan-hâi-nɔ̀i','翠 堅 害挪伊','請幫我寫下來',1],
+['จ่ายเงินสด','jàai-ngən-sòt','摘 恩 縮','付現金',1],
+['รับบัตรเครดิตไหม','ráp-bàt-khree-dìt-mǎi','拉 爸 克雷迪 埋','可以刷卡嗎？',2],
+['สแกนจ่ายได้ไหม','sà-kɛɛn-jàai-dâai-mǎi','撒開恩 摘 代埋','可以掃碼付款嗎？',2],
+['บาท','bàat','爸','泰銖',0]]},
+{id:'food',name:'點餐',icon:'🍜',items:[
+['ขอเมนูหน่อย','khɔ̌ɔ-mee-nuu-nɔ̀i','可 咩努 挪伊','請給我菜單',1],
+['ขออันนี้','khɔ̌ɔ-an-níi','可 安逆','我要這個（指著菜單）',1],
+['สองที่','sɔ̌ɔng-thîi','鬆 替','兩份',1],
+['ไม่เผ็ด','mâi-phèt','麥 撇','不要辣',1],
+['เผ็ดนิดหน่อย','phèt-nít-nɔ̀i','撇 逆挪伊','小辣',1],
+['ไม่ใส่ผักชี','mâi-sài-phàk-chii','麥賽 帕器','不要加香菜',1],
+['ไม่ใส่น้ำแข็ง','mâi-sài-nám-khɛ̌ng','麥賽 南坑','去冰',1],
+['หวานน้อย','wǎan-nɔ́ɔi','萬 挪伊','少糖',1],
+['ขอน้ำเปล่า','khɔ̌ɔ-nám-plàao','可 南保','請給我一瓶水',1],
+['แพ้ถั่วลิสง','phɛ́ɛ-thùa-lí-sǒng','胚 吐阿 里鬆','我對花生過敏',1],
+['กินมังสวิรัติ','kin-mang-sà-wí-rát','金 忙撒威拉','我吃素',1],
+['กินที่นี่','kin-thîi-nîi','金 替逆','內用',1],
+['ใส่กล่องกลับบ้าน','sài-klɔ̀ng-klàp-bâan','賽 勾 葛棒','外帶（打包）',1],
+['อร่อยมาก','à-rɔ̀i-mâak','阿蕊 罵','很好吃',1],
+['เช็คบิล','chék-bin','切 冰','買單',1],
+['ข้าวซอย','khâao-sɔɔi','靠 嗖伊','金麵（清邁咖哩椰奶麵）',0,'清邁名物'],
+['ไส้อั่ว','sâi-ùa','賽 烏阿','北泰香腸',0,'清邁名物'],
+['ข้าวเหนียว','khâao-nǐao','靠 鳥','糯米飯',0],
+['น้ำพริกหนุ่ม','nám-phrík-nùm','南 匹 濃','青辣椒醬（北泰沾醬）',0,'清邁名物']]},
+{id:'ride',name:'交通',icon:'🛺',items:[
+['ไป ___ เท่าไหร่','pai ___ thâo-rài','掰 ___ 掏萊','去＿＿多少錢？',2],
+['ไปไหม','pai-mǎi','掰 埋','去嗎？（問司機載不載）',2],
+['ไปประตูท่าแพ','pai-prà-tuu-thâa-phɛɛ','掰 巴嘟 塔佩','去塔佩門',1],
+['ไปถนนนิมมาน','pai-thà-nǒn-nim-maan','掰 塔農 寧曼','去寧曼路',1],
+['ไปสนามบิน','pai-sà-nǎam-bin','掰 撒南冰','去機場',1],
+['ไปดอยสุเทพ','pai-dɔɔi-sù-thêep','掰 多伊 蘇鐵','去素帖山（雙龍寺）',1],
+['รถแดง','rót-dɛɛng','落 顛','紅色雙條車',0,'清邁特有'],
+['เหมาไปเท่าไหร่','mǎo-pai-thâo-rài','貓 掰 掏萊','包車去多少錢？',2],
+['จอดตรงนี้','jɔ̀ɔt-trong-níi','卓 東逆','在這裡停',1],
+['เลี้ยวซ้าย','líao-sáai','遼 賽','左轉',1],
+['เลี้ยวขวา','líao-khwǎa','遼 誇','右轉',1],
+['ตรงไป','trong-pai','東 掰','直走',1],
+['ขับช้าๆ หน่อย','khàp-cháa-cháa-nɔ̀i','卡 恰恰 挪伊','請開慢一點',1],
+['รอสักครู่','rɔɔ-sàk-khrûu','囉 撒庫','請等一下',1],
+['ถึงหรือยัง','thʉ̌ng-rʉ̌ʉ-yang','騰 了 樣','到了嗎？',2]]},
+{id:'hotel',name:'住宿',icon:'🏨',items:[
+['จองไว้แล้ว','jɔɔng-wái-lɛ́ɛo','中 外 咧喔','我已經訂房了',1],
+['ขอเช็คอิน','khɔ̌ɔ-chék-in','可 切因','我要辦入住',1],
+['รหัสไวไฟคืออะไร','rá-hàt-wai-fai-khʉʉ-à-rai','拉哈 歪fai 庫 阿萊','Wi‑Fi 密碼是什麼？',2],
+['ไม่มีน้ำร้อน','mâi-mii-nám-rɔ́ɔn','麥咪 南龍','沒有熱水',1],
+['แอร์เสีย','ɛɛ-sǐa','欸 夏','冷氣壞了',1],
+['ฝากกระเป๋าได้ไหม','fàak-krà-pǎo-dâai-mǎi','發 嘎包 代埋','可以寄放行李嗎？',2],
+['เช็คเอาท์กี่โมง','chék-áo-kìi-moong','切凹 幾矇','幾點退房？',2],
+['อาหารเช้ากี่โมง','aa-hǎan-cháao-kìi-moong','阿涵 草 幾矇','早餐幾點？',2],
+['ขอผ้าเช็ดตัวเพิ่ม','khɔ̌ɔ-phâa-chét-tua-phə̂əm','可 帕 切兜 噴','請再給我毛巾',1],
+['ช่วยเรียกแท็กซี่ให้หน่อย','chûai-rîak-thɛ́k-sîi-hâi-nɔ̀i','翠 利阿 鐵細 害挪伊','請幫我叫車',1],
+['กุญแจห้อง','kun-jɛɛ-hɔ̂ng','滾賊 哄','房間鑰匙',0],
+['ห้อง ___','hɔ̂ng ___','哄 ＿＿','＿＿號房',0]]},
+{id:'shop',name:'購物',icon:'🛍️',items:[
+['อันนี้เท่าไหร่','an-níi-thâo-rài','安逆 掏萊','這個多少錢？',2],
+['ดูก่อน','duu-kɔ̀ɔn','嘟 功','我先看看',1],
+['มีสีอื่นไหม','mii-sǐi-ʉ̀ʉn-mǎi','咪 西 恩 埋','有別的顏色嗎？',2],
+['มีไซส์ใหญ่กว่านี้ไหม','mii-sai-yài-kwàa-níi-mǎi','咪 sai 壓伊 瓜逆 埋','有大一點的嗎？',2],
+['มีไซส์เล็กกว่านี้ไหม','mii-sai-lék-kwàa-níi-mǎi','咪 sai 咧 瓜逆 埋','有小一點的嗎？',2],
+['ลองได้ไหม','lɔɔng-dâai-mǎi','隆 代埋','可以試穿嗎？',2],
+['ซื้อสองอัน ลดได้ไหม','sʉ́ʉ-sɔ̌ɔng-an lót-dâai-mǎi','素 鬆安 洛代埋','買兩個可以便宜嗎？',2],
+['เอาอันนี้','ao-an-níi','凹 安逆','我要這個',1],
+['ไม่เป็นไร ขอบคุณ','mâi-pen-rai khɔ̀ɔp-khun','麥奔萊 摳坤','不用了，謝謝',1],
+['ใส่ถุงให้หน่อย','sài-thǔng-hâi-nɔ̀i','賽 通 害挪伊','請幫我裝袋',1],
+['ไม่ต้องใส่ถุง','mâi-tɔ̂ng-sài-thǔng','麥東 賽通','不用袋子',1],
+['ของฝาก','khɔ̌ɔng-fàak','孔 發','伴手禮',0],
+['ถนนคนเดิน','thà-nǒn-khon-dəən','塔農 空等','步行街夜市（週六、週日）',0,'清邁特有'],
+['ตลาดวโรรส','tà-làat-wá-roo-rót','搭拉 哇囉洛','瓦洛洛市場',0,'清邁特有']]},
+{id:'way',name:'問路與景點',icon:'🗺️',items:[
+['ห้องน้ำอยู่ที่ไหน','hɔ̂ng-náam-yùu-thîi-nǎi','哄南 尤 替奶','廁所在哪裡？',2],
+['___ อยู่ที่ไหน','___ yùu-thîi-nǎi','＿＿ 尤 替奶','＿＿在哪裡？',2],
+['ไกลไหม','klai-mǎi','該 埋','遠嗎？',2],
+['เดินไปได้ไหม','dəən-pai-dâai-mǎi','等掰 代埋','走路可以到嗎？',2],
+['แถวนี้มี ___ ไหม','thɛ̌ɛo-níi-mii ___ mǎi','挑逆 咪 ＿＿ 埋','這附近有＿＿嗎？',2],
+['เซเว่น','see-wên','誰溫','7‑Eleven 便利商店',0],
+['ตู้เอทีเอ็ม','tûu-ee-thii-em','度 A‑T‑M','ATM 提款機',0],
+['วัด','wát','哇','寺廟',0],
+['ทางนี้ใช่ไหม','thaang-níi-châi-mǎi','湯逆 柴埋','是這條路嗎？',2],
+['ถ่ายรูปได้ไหม','thàai-rûup-dâai-mǎi','太路 代埋','可以拍照嗎？',2],
+['ช่วยถ่ายรูปให้หน่อย','chûai-thàai-rûup-hâi-nɔ̀i','翠 太路 害挪伊','請幫我拍照',1],
+['เปิดกี่โมง','pə̀ət-kìi-moong','撥 幾矇','幾點開門？',2],
+['ปิดกี่โมง','pìt-kìi-moong','逼 幾矇','幾點關門？',2],
+['ค่าเข้าเท่าไหร่','khâa-khâo-thâo-rài','卡靠 掏萊','門票多少錢？',2]]},
+{id:'sos',name:'緊急狀況',icon:'🚑',items:[
+['ช่วยด้วย','chûai-dûai','翠 堆','救命！',0],
+['ไม่สบาย','mâi-sà-baai','麥 撒拜','我不舒服',1],
+['ปวดหัว','pùat-hǔa','撥阿 花','頭痛',1],
+['ปวดท้อง','pùat-thɔ́ɔng','撥阿 痛','肚子痛',1],
+['ท้องเสีย','thɔ́ɔng-sǐa','痛 夏','拉肚子',1],
+['มีไข้','mii-khâi','咪 凱','發燒',1],
+['แพ้ยา','phɛ́ɛ-yaa','胚 壓','我對藥物過敏',1],
+['ร้านขายยาอยู่ที่ไหน','ráan-khǎai-yaa-yùu-thîi-nǎi','爛 凱壓 尤 替奶','藥局在哪裡？',2],
+['ไปโรงพยาบาล','pai-roong-phá-yaa-baan','掰 龍帕壓班','去醫院',1],
+['เรียกรถพยาบาล','rîak-rót-phá-yaa-baan','利阿 落帕壓班','叫救護車',1],
+['เรียกตำรวจ','rîak-tam-rùat','利阿 擔路阿','叫警察',1],
+['หลงทาง','lǒng-thaang','隆 湯','我迷路了',1],
+['กระเป๋าสตางค์หาย','krà-pǎo-sà-taang-hǎai','嘎包 撒當 海','錢包不見了',1],
+['หนังสือเดินทางหาย','nǎng-sʉ̌ʉ-dəən-thaang-hǎai','囊蘇 等湯 海','護照不見了',1],
+['ขอยืมโทรศัพท์หน่อย','khɔ̌ɔ-yʉʉm-thoo-rá-sàp-nɔ̀i','可 雍 拖拉撒 挪伊','可以借我打電話嗎',1]]}
+];
+const PART={1:{m:['ครับ','khráp','卡'],f:['ค่ะ','khâ','咖（降調）']},2:{m:['ครับ','khráp','卡'],f:['คะ','khá','咖（揚調）']}};
+const ALL=[];SC.forEach(s=>{s.list=s.items.map((a,i)=>{const o={id:s.id+'-'+i,sc:s.id,th:a[0],rom:a[1],zh:a[2],mean:a[3],p:a[4]||0,tag:a[5]||''};ALL.push(o);return o;});});
+const BYID=Object.fromEntries(ALL.map(o=>[o.id,o]));
+const SCBY=Object.fromEntries(SC.map(s=>[s.id,s]));
+
+const PLAN=[
+{t:'打招呼與禮貌用語',tasks:[['學「禮貌與打招呼」','learn/greet'],['閃卡練習這一課','practice/flash/greet']]},
+{t:'數字與金錢',tasks:[['學「數字與金錢」','learn/money'],['用「數字怎麼唸」試唸 5 個價格','tools/num']]},
+{t:'點餐',tasks:[['學「點餐」','learn/food'],['看中文選泰文測驗：點餐','practice/zh2th/food']]},
+{t:'複習＋小測驗',tasks:[['閃卡複習已學句子','practice/flash/learned'],['看中文選泰文測驗：已學會','practice/zh2th/learned']]},
+{t:'交通',tasks:[['學「交通」','learn/ride'],['聽音選義測驗：交通','practice/listen/ride']]},
+{t:'住宿',tasks:[['學「住宿」','learn/hotel'],['閃卡練習這一課','practice/flash/hotel']]},
+{t:'複習＋搭雙條車',tasks:[['閃卡複習已學句子','practice/flash/learned'],['看中文選泰文測驗：住宿','practice/zh2th/hotel']]},
+{t:'購物',tasks:[['學「購物」','learn/shop'],['聽音選義測驗：購物','practice/listen/shop']]},
+{t:'問路與景點',tasks:[['學「問路與景點」','learn/way'],['聽音選義測驗：問路','practice/listen/way']]},
+{t:'緊急狀況',tasks:[['學「緊急狀況」','learn/sos'],['記下緊急電話','tools/sos']]},
+{t:'全面閃卡複習',tasks:[['閃卡複習已學句子','practice/flash/learned'],['看中文選泰文測驗：已學會','practice/zh2th/learned']]},
+{t:'聽力加強',tasks:[['聽音選義測驗：全部','practice/listen/all'],['閃卡練習：緊急狀況','practice/flash/sos']]},
+{t:'旅途準備',tasks:[['瀏覽給店家看的大字卡','tools/cards'],['讀完文化提醒','tools/culture'],['用快速小抄找 5 句最想說的話','tools/search']]},
+{t:'總測驗，準備出發',tasks:[['看中文選泰文測驗：全部','practice/zh2th/all'],['閃卡複習已學句子','practice/flash/learned']]}
+];
+
+const CARDS=[
+['ไม่ใส่ผักชี','不要加香菜',1],['ไม่เผ็ด','不要辣',1],['ไม่ใส่ผงชูรส','不要加味精',1],
+['แพ้ถั่วลิสง','我對花生過敏',1],['พูดไทยไม่ได้ ช่วยชี้ให้ดูหน่อย','我不會說泰語，請用手指給我看',1],
+['ช่วยเขียนราคาให้หน่อย','請幫我把價格寫下來',1],['ห้องน้ำอยู่ที่ไหน','廁所在哪裡？',2],
+['จอดตรงนี้','請在這裡停車',1],['ช่วยพาไปที่นี่หน่อย','請帶我去這個地方',1,'addr'],
+['ช่วยเรียกรถพยาบาลด้วย','請幫我叫救護車',1]
+];
+const TIPS=[
+'句尾加 ครับ（男）或 ค่ะ／คะ（女）是基本禮貌，跟陌生人說話時一定要加。',
+'泰國人見面常行合十禮（ไหว้ wâi）。店員對你合十時，微笑點頭或回禮就好。',
+'進寺廟要遮肩、過膝，進殿前脫鞋；女性不可碰觸僧侶，遞東西時請放在一旁。',
+'不要摸別人的頭，也不要用腳指人或物品；坐著時腳底別朝向佛像或別人。',
+'對泰國皇室要保持尊重，不要開玩笑。鈔票上有國王肖像，掉了別用腳踩住。',
+'搭紅色雙條車時，先說目的地、問好價錢再上車，到站下車後付錢。',
+'夜市可以笑著殺價，但別砍太多；小吃攤和便利商店通常不議價。',
+'清邁人說話溫和，語氣放輕、保持微笑，比說得完美更重要。'
+];
+
+/* ---------- 狀態 ---------- */
+const KEY='cm-thai-v1';
+const S={learned:{},srs:{},done:{},gender:'m',trip:null,rate:0.95};
+try{const r=localStorage.getItem(KEY);if(r)Object.assign(S,JSON.parse(r)||{});}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+if(!S.trip){const d=new Date();d.setDate(d.getDate()+14);S.trip=ymd(d);save();}
+function daysLeft(){const t=new Date(S.trip+'T00:00:00');const n=new Date();n.setHours(0,0,0,0);return Math.round((t-n)/864e5);}
+function todayDay(){return Math.min(14,Math.max(1,15-daysLeft()));}
+let curDay=todayDay();
+let curSc=null;
+const P={mode:null,scope:'learned'};
+let searchQ='';
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2800);}
+
+/* ---------- 聲調著色 ---------- */
+function toneOf(s){const n=s.normalize('NFD');if(n.includes('\u0300'))return'low';if(n.includes('\u0302'))return'fall';if(n.includes('\u0301'))return'high';if(n.includes('\u030C'))return'rise';return'mid';}
+function romHTML(r){
+  return String(r).split(/([\s\-]+)/).map(p=>{
+    if(!p)return'';
+    if(/^[\s\-]+$/.test(p))return '<span class="sep">'+(p.includes('-')?'-':' ')+'</span>';
+    if(/_|＿/.test(p)||!/[a-zA-Zɔɛʉəŋ]/.test(p))return esc(p);
+    return '<span class="t-'+toneOf(p)+'">'+esc(p)+'</span>';
+  }).join('');
+}
+const LEGEND='<div class="legend" aria-label="聲調顏色"><span class="t-mid"><b>a</b> 中平調</span><span class="t-low"><b>à</b> 低調</span><span class="t-fall"><b>â</b> 降調</span><span class="t-high"><b>á</b> 高調</span><span class="t-rise"><b>ǎ</b> 升調</span></div>';
+
+/* ---------- 發音 ---------- */
+let thVoice=null,TTS=null,ttsTh=false;
+function loadVoices(){try{const vs=speechSynthesis.getVoices();thVoice=vs.find(v=>/^th(-|_|$)/i.test(v.lang))||null;}catch(e){}}
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+if(window.claude&&claude.use){
+  claude.use('tts').then(async t=>{TTS=t;if(t){try{const l=await t.languages?.().catch(()=>undefined);ttsTh=Array.isArray(l)&&l.some(x=>/^th/i.test(x));}catch(e){}}}).catch(()=>{});
+}
+function speechText(o){let t=o.th.replace(/_+|＿+/g,' ');if(o.p)t+=PART[o.p][S.gender][0];return t;}
+async function speak(text,slow){
+  if('speechSynthesis' in window&&thVoice){
+    try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.voice=thVoice;u.lang=thVoice.lang;u.rate=slow?.55:.9;speechSynthesis.speak(u);return;}catch(e){}
+  }
+  if(TTS&&ttsTh){try{await TTS.speak(text,{language:'th',rate:slow?.7:1});return;}catch(e){if(e&&e.code==='not_granted'){TTS=null;}}}
+  if('speechSynthesis' in window){
+    try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='th-TH';u.rate=slow?.55:.9;speechSynthesis.speak(u);
+      if(!thVoice&&!window._warned)setTimeout(()=>{window._warned=1;if(!thVoice)toast('找不到泰語語音。請在手機或電腦的語音設定中加入「泰語（ไทย）」語音。');},400);return;}catch(e){}
+  }
+  toast('這個瀏覽器無法播放語音，請改用 Chrome 或 iPhone 的 Safari。');
+}
+function sayId(id,slow){const o=BYID[id];if(o)speak(speechText(o),slow);}
+
+/* ---------- 圖示 ---------- */
+const I={
+play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>',
+check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+learn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21a2 2 0 0 1 2-2h13v2"/></svg>',
+practice:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>',
+tools:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>'
+};
+
+/* ---------- 路由 ---------- */
+const VIEWS=[['home','首頁'],['learn','學習'],['practice','練習'],['tools','旅途工具']];
+function route(){const h=(location.hash||'').slice(1);return VIEWS.some(v=>v[0]===h)?h:'home';}
+function go(path){
+  const [v,a,b]=path.split('/');
+  if(v==='learn'){curSc=a||null;}
+  if(v==='practice'){if(a){P.mode=a;P.scope=b||'learned';startPractice();}else P.mode=null;}
+  if(location.hash==='#'+v){render();}else location.hash=v;
+  if(v==='tools'&&a){setTimeout(()=>{const el=document.getElementById('t-'+a);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},60);}
+  else window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);});
+
+function renderTabs(){
+  const r=route();
+  document.getElementById('tabs').innerHTML=VIEWS.map(([k,n])=>`<a href="#${k}" ${r===k?'aria-current="page"':''}>${I[k]}<span>${n}</span></a>`).join('');
+}
+function render(){
+  renderTabs();
+  const r=route();const app=document.getElementById('app');
+  app.innerHTML=({home:vHome,learn:vLearn,practice:vPractice,tools:vTools})[r]();
+}
+
+/* ---------- 共用元件 ---------- */
+function scProg(s){const n=s.list.filter(o=>S.learned[o.id]).length;return [n,s.list.length];}
+function scRows(action){
+  return '<div class="sclist">'+SC.map(s=>{const [n,t]=scProg(s);return `<button class="scrow" data-go="${action}/${s.id}"><span class="ic" aria-hidden="true">${s.icon}</span><span class="nm"><b>${s.name}</b><span class="bar"><i style="width:${Math.round(n/t*100)}%"></i></span></span><span class="cnt">${n}／${t}</span></button>`;}).join('')+'</div>';
+}
+function ptHTML(o){if(!o.p)return'';const q=PART[o.p];return `<span class="pt th" title="句尾敬語：男／女">${q.m[0]}／${q.f[0]}</span>`;}
+function ptRom(o){if(!o.p)return'';const q=PART[o.p];return ` <span class="ptr">(${esc(q.m[1])}／${esc(q.f[1])})</span>`;}
+function phRow(o){
+  const on=!!S.learned[o.id];
+  return `<div class="ph"><div class="main">
+    <div class="thx">${esc(o.th)}${ptHTML(o)}</div>
+    <div class="rom">${romHTML(o.rom)}${ptRom(o)}</div>
+    <div class="mean">${esc(o.mean)}${o.tag?`<span class="tag">${esc(o.tag)}</span>`:''}</div>
+    <div class="zh">近似音：${esc(o.zh)}</div></div>
+    <div class="act">
+      <button class="iconbtn play" data-say="${o.id}" aria-label="播放發音">${I.play}</button>
+      <button class="iconbtn" data-slow="${o.id}" aria-label="慢速播放">慢</button>
+      <button class="iconbtn ${on?'on':''}" data-learn="${o.id}" aria-pressed="${on}" aria-label="${on?'取消已學會':'標記為已學會'}">${I.check}</button>
+    </div></div>`;
+}
+function genderSeg(){return `<div class="seg" role="group" aria-label="播放的句尾"><button data-gender="m" aria-pressed="${S.gender==='m'}">男 ครับ</button><button data-gender="f" aria-pressed="${S.gender==='f'}">女 ค่ะ</button></div>`;}
+
+/* ---------- 首頁 ---------- */
+function vHome(){
+  const dl=daysLeft();const day=PLAN[curDay-1];const td=todayDay();
+  const learned=Object.values(S.learned).filter(Boolean).length;
+  const status=dl>0?`距離出發還有 <strong>${dl}</strong> 天`:(dl===0?'<strong>今天出發</strong>，一路順風！':'<strong>旅途中</strong>，大字卡和小抄在「旅途工具」');
+  return `<div class="hero">
+    <button class="playbig" data-speak="สวัสดีครับ" aria-label="播放：你好">${I.play}</button>
+    <div class="big" lang="th">สวัสดี</div>
+    <div class="rom">${romHTML('sà-wàt-dii')}</div>
+    <p class="lead">你好，清邁。每天 20 分鐘，兩週學會旅遊會用到的泰語。</p>
+    <div class="trip">${status}<label class="muted small">出發日 <input type="date" id="tripdate" value="${S.trip}"></label></div>
+    <p class="muted small">已學會 ${learned}／${ALL.length} 句</p>
+  </div>
+  <section><div class="sec-head"><h2>14 天學習計畫</h2><span class="muted small">今天是第 ${td} 天</span></div>
+    <div class="days" role="group" aria-label="選擇天數">${PLAN.map((d,i)=>{const n=i+1;const all=d.tasks.every((_,j)=>S.done[n+'-'+j]);return `<button data-day="${n}" aria-pressed="${n===curDay}" class="${n===td?'today':''} ${all?'done':''}"><small>Day</small>${n}</button>`;}).join('')}</div>
+    <div class="plan"><p class="muted small" style="margin:0">第 ${curDay} 天</p><h3>${day.t}</h3>
+      ${day.tasks.map((t,j)=>{const k=curDay+'-'+j;const d=!!S.done[k];return `<div class="task ${d?'is-done':''}"><input type="checkbox" id="tk${j}" data-task="${k}" ${d?'checked':''}><label for="tk${j}">${t[0]}</label><button class="btn sm" data-go="${t[1]}">開始</button></div>`;}).join('')}
+    </div></section>
+  <section><div class="sec-head"><h2>8 個旅遊情境</h2></div>${scRows('learn')}</section>
+  <section><h3>怎麼看拼音的顏色</h3><p class="muted small">泰語有 5 個聲調，聲調不同意思就不同。拼音上的符號和顏色告訴你該用哪個聲調。</p>${LEGEND}
+  <p class="muted small" style="margin-top:10px">特殊母音：ɔ 像張大嘴的「喔」，ɛ 像張大嘴的「欸」，ʉ 像不圓唇的「ㄨ」，ə 像「ㄜ」。母音寫兩次（aa、ii）代表拉長音。</p></section>`;
+}
+
+/* ---------- 學習 ---------- */
+function vLearn(){
+  if(!curSc||!SCBY[curSc])return `<h2>選一個情境開始學</h2><p class="muted">每句都可以聽發音、慢速播放。學會後按 ✓，它就會加入閃卡複習。</p><div style="margin-top:16px">${scRows('learn')}</div>`;
+  const s=SCBY[curSc];const [n,t]=scProg(s);
+  return `<button class="back" data-go="learn">‹ 所有情境</button>
+  <div class="lesson-top"><span class="ic" aria-hidden="true">${s.icon}</span><div><h2>${s.name}</h2><p class="muted small" style="margin:0">已學會 ${n}／${t} 句</p></div></div>
+  <div class="note">金色的 <span class="th" style="color:var(--gold)">ครับ／ค่ะ</span> 是句尾敬語：男生說 ครับ（khráp），女生說 ค่ะ（khâ），女生問問題時用 คะ（khá）。
+    <div class="row"><span>播放時使用</span>${genderSeg()}</div>${LEGEND}</div>
+  <div class="phl">${s.list.map(phRow).join('')}</div>
+  <div class="actions"><button class="btn ghost" data-learnall="${s.id}">全部標記為已學會</button><button class="btn" data-go="practice/flash/${s.id}">用閃卡練習這一課</button></div>`;
+}
+
+/* ---------- 練習 ---------- */
+const INT=[0,6e4,864e5,2*864e5,4*864e5,7*864e5];
+const SES={};
+function pool(scope){
+  if(scope==='all')return ALL.slice();
+  if(scope==='learned')return ALL.filter(o=>S.learned[o.id]);
+  return SCBY[scope]?SCBY[scope].list.slice():[];
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startPractice(){
+  const p=pool(P.scope);SES.err='';SES.i=0;SES.right=0;SES.wrong=[];SES.flip=false;SES.picked=null;SES.reviewed=0;
+  if(P.mode==='flash'){
+    const now=Date.now();
+    const sorted=p.map(o=>({o,d:(S.srs[o.id]||{d:0}).d})).sort((a,b)=>a.d-b.d);
+    let q=sorted.filter(x=>x.d<=now).map(x=>x.o);if(!q.length)q=sorted.map(x=>x.o);
+    SES.q=shuffle(q.slice(0,20));SES.dir=SES.dir||'zh';
+  }else{
+    SES.q=shuffle(p.slice()).slice(0,10);
+    SES.q=SES.q.map(o=>{const others=shuffle((p.length>=4?p:ALL).filter(x=>x.id!==o.id&&x.mean!==o.mean)).slice(0,3);return {o,opts:shuffle([o,...others])};});
+  }
+}
+function scopeSelect(){
+  const opt=(v,t)=>`<option value="${v}" ${P.scope===v?'selected':''}>${t}</option>`;
+  return `<label class="scope"><span>練習範圍</span><select id="scope">${opt('learned','已學會的句子（'+ALL.filter(o=>S.learned[o.id]).length+'）')}${opt('all','全部句子（'+ALL.length+'）')}${SC.map(s=>opt(s.id,s.icon+' '+s.name)).join('')}</select></label>`;
+}
+function vPractice(){
+  if(!P.mode){
+    const due=ALL.filter(o=>S.learned[o.id]&&(!S.srs[o.id]||S.srs[o.id].d<=Date.now())).length;
+    return `<h2>練習</h2><p class="muted">先選範圍，再選練習方式。${due?`目前有 ${due} 句已學會的句子該複習了。`:''}</p>
+    ${scopeSelect()}
+    <div class="modes">
+      <button class="mode" data-mode="flash"><span class="ic" aria-hidden="true">🃏</span><span><b>閃卡複習</b><span class="muted small">看中文想泰語，翻牌對答案。越不熟的句子越常出現。</span></span></button>
+      <button class="mode" data-mode="listen"><span class="ic" aria-hidden="true">👂</span><span><b>聽音選義</b><span class="muted small">聽一句泰語，選出正確的中文意思。共 10 題。</span></span></button>
+      <button class="mode" data-mode="zh2th"><span class="ic" aria-hidden="true">🎯</span><span><b>看中文選泰文</b><span class="muted small">看中文意思，選出正確的泰語說法。共 10 題。</span></span></button>
+    </div>`;
+  }
+  const back=`<button class="back" data-go="practice">‹ 練習選單</button>`;
+  if(!SES.q||!SES.q.length){
+    return back+`<div class="card"><p class="q">這個範圍還沒有句子</p><p class="muted">先到「學習」把句子標記為已學會，或改選其他範圍。</p><div class="actions"><button class="btn" data-go="learn">去學習</button><button class="btn ghost" data-pscope="all">改練全部句子</button></div></div>`;
+  }
+  if(P.mode==='flash')return back+vFlash();
+  return back+vQuiz();
+}
+function vFlash(){
+  if(SES.i>=SES.q.length){
+    return `<div class="card"><p class="score">${SES.reviewed}</p><p>這一輪複習了 ${SES.reviewed} 張卡片</p><div class="actions"><button class="btn" data-restart>再來一輪</button><button class="btn ghost" data-go="practice">回練習選單</button></div></div>`;
+  }
+  const o=SES.q[SES.i];
+  const seg=`<div class="seg" role="group" aria-label="閃卡方向"><button data-dir="zh" aria-pressed="${SES.dir==='zh'}">中 → 泰</button><button data-dir="th" aria-pressed="${SES.dir==='th'}">泰 → 中</button></div>`;
+  const front=SES.dir==='zh'?`<p class="q">${esc(o.mean)}</p><p class="muted">用泰語怎麼說？想好再翻牌</p>`:`<div class="thq">${esc(o.th)}</div><button class="iconbtn play" data-say="${o.id}" aria-label="播放發音">${I.play}</button><p class="muted">這句是什麼意思？</p>`;
+  const backside=`<div class="thq">${esc(o.th)}${ptHTML(o)}</div><div class="rom">${romHTML(o.rom)}${ptRom(o)}</div><p class="q" style="font-size:1.2rem;margin-top:6px">${esc(o.mean)}</p><p class="muted small">近似音：${esc(o.zh)}</p><div class="actions" style="margin-top:4px"><button class="iconbtn play" data-say="${o.id}" aria-label="播放發音">${I.play}</button><button class="iconbtn" data-slow="${o.id}" aria-label="慢速播放">慢</button></div>`;
+  return `<div style="display:flex;justify-content:flex-end">${seg}</div>
+  <div class="counter"><span>${SES.i+1}／${SES.q.length}</span><span>${SCBY[o.sc].icon} ${SCBY[o.sc].name}</span></div>
+  <div class="card">${SES.flip?backside:front}</div>
+  <div class="actions">${SES.flip?`<button class="btn ghost" data-rate="0">還不熟</button><button class="btn indigo" data-rate="1">記得</button>`:`<button class="btn" data-flip>翻牌</button>`}</div>`;
+}
+function vQuiz(){
+  if(SES.i>=SES.q.length){
+    return `<div class="card"><p class="score">${SES.right}／${SES.q.length}</p><p>${SES.right===SES.q.length?'全對，太厲害了！':'答錯的句子在下面，再聽幾次吧。'}</p><div class="actions"><button class="btn" data-restart>再測一次</button><button class="btn ghost" data-go="practice">回練習選單</button></div></div>
+    ${SES.wrong.length?`<section><h3 style="margin-bottom:10px">要再加強的句子</h3><div class="phl">${SES.wrong.map(phRow).join('')}</div></section>`:''}`;
+  }
+  const {o,opts}=SES.q[SES.i];const listen=P.mode==='listen';
+  const head=listen?`<button class="playbig" data-say="${o.id}" aria-label="播放題目">${I.play}</button><p class="muted">聽完選出意思（可以重複播放）</p>`:`<p class="q">${esc(o.mean)}</p><p class="muted">泰語怎麼說？</p>`;
+  const optHTML=opts.map((x,k)=>{
+    let cls='';if(SES.picked!=null){if(x.id===o.id)cls='right';else if(k===SES.picked)cls='wrong';}
+    const body=listen?esc(x.mean):`<span class="th">${esc(x.th)}</span><br><span class="rom small">${romHTML(x.rom)}</span>`;
+    return `<button class="opt ${cls}" data-pick="${k}" ${SES.picked!=null?'disabled':''}>${body}</button>`;}).join('');
+  const after=SES.picked!=null?`<div class="note"><b>${opts[SES.picked].id===o.id?'答對了！':'正確答案'}</b><div class="th" style="font-size:1.3rem">${esc(o.th)}${ptHTML(o)}</div><div class="rom">${romHTML(o.rom)}</div><div>${esc(o.mean)}　<span class="muted small">近似音：${esc(o.zh)}</span></div></div><div class="actions"><button class="btn" data-next>${SES.i+1<SES.q.length?'下一題':'看結果'}</button></div>`:'';
+  return `<div class="counter"><span>第 ${SES.i+1}／${SES.q.length} 題</span><span>答對 ${SES.right}</span></div>
+  <div class="card" style="min-height:170px">${head}</div><div class="opts">${optHTML}</div>${after}`;
+}
+
+/* ---------- 數字唸法 ---------- */
+const DG=[['ศูนย์','sǔun','順'],['หนึ่ง','nʉ̀ng','能'],['สอง','sɔ̌ɔng','鬆'],['สาม','sǎam','三'],['สี่','sìi','細'],['ห้า','hâa','哈'],['หก','hòk','齁'],['เจ็ด','jèt','摘'],['แปด','pɛ̀ɛt','憋'],['เก้า','kâo','告']];
+const PL=[null,['สิบ','sìp','戲'],['ร้อย','rɔ́ɔi','若伊'],['พัน','phan','潘'],['หมื่น','mʉ̀ʉn','悶'],['แสน','sɛ̌ɛn','線']];
+function under1m(n){
+  const ds=String(n).split('').reverse().map(Number);const out=[];
+  for(let i=ds.length-1;i>=0;i--){const d=ds[i];if(!d)continue;
+    if(i===1){if(d===1)out.push(PL[1]);else if(d===2)out.push(['ยี่','yîi','億'],PL[1]);else out.push(DG[d],PL[1]);}
+    else if(i===0){if(d===1&&ds.length>1)out.push(['เอ็ด','èt','欸']);else out.push(DG[d]);}
+    else out.push(DG[d],PL[i]);}
+  return out;
+}
+function thaiNum(n){
+  if(n===0)return [DG[0]];
+  if(n>=1e6){const hi=Math.floor(n/1e6),lo=n%1e6;return [...thaiNum(hi),['ล้าน','láan','爛'],...(lo?under1m(lo):[])];}
+  return under1m(n);
+}
+
+/* ---------- 旅途工具 ---------- */
+function vTools(){
+  const gp=k=>PART[k][S.gender][0];
+  const q=searchQ.trim().toLowerCase();
+  const hits=q?ALL.filter(o=>(o.mean+o.th+o.rom.normalize('NFD').replace(/[\u0300-\u036f]/g,'')+o.rom+o.zh).toLowerCase().includes(q)).slice(0,30):[];
+  return `<h2>旅途工具</h2><p class="muted">到了清邁實際會用到的東西都在這裡。</p>
+  <section id="t-cards"><div class="sec-head"><h3>給店家看的大字卡</h3><span class="muted small">點一下全螢幕顯示</span></div>
+    <div class="bigcards">${CARDS.map((c,k)=>`<button class="bigcard" data-card="${k}"><span class="th">${esc(c[0])}${gp(c[2])}</span><span class="zh">${esc(c[1])}</span></button>`).join('')}</div></section>
+  <section id="t-num"><h3 style="margin-bottom:10px">數字怎麼唸</h3><div class="panel">
+    <div class="field"><input id="numin" inputmode="numeric" placeholder="例如 350" aria-label="輸入數字"><button class="iconbtn play" id="numplay" aria-label="播放數字">${I.play}</button></div>
+    <div class="numout" id="numout"><p class="muted small">輸入價格，看泰語怎麼唸。</p></div></div></section>
+  <section id="t-money"><h3 style="margin-bottom:10px">泰銖換算</h3><div class="panel">
+    <div class="field"><label>泰銖 <input id="thb" inputmode="decimal" placeholder="100"></label><span>＝</span><label>新台幣 <input id="twd" inputmode="decimal" placeholder="—"></label></div>
+    <p class="muted small" style="margin-top:10px">匯率：1 泰銖 ＝ <input id="rate" inputmode="decimal" value="${S.rate}" style="width:70px;border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:2px 6px"> 新台幣（請依出發前的實際匯率修改）</p></div></section>
+  <section id="t-search"><h3 style="margin-bottom:10px">快速小抄</h3>
+    <input class="search" id="search" type="search" placeholder="搜尋中文、泰文或拼音，例如：廁所、辣、thâo" value="${esc(searchQ)}" aria-label="搜尋句子">
+    <div id="searchres">${q?(hits.length?`<div class="phl">${hits.map(phRow).join('')}</div>`:'<p class="muted">找不到符合的句子，換個關鍵字試試。</p>'):''}</div></section>
+  <section id="t-sos"><h3 style="margin-bottom:10px">緊急電話</h3><div class="emerg">
+    <a href="tel:1155"><b>1155</b>觀光警察<br><span class="muted small">可說英語</span></a><a href="tel:1669"><b>1669</b>救護車</a><a href="tel:191"><b>191</b>警察</a></div></section>
+  <section id="t-culture"><h3 style="margin-bottom:10px">文化提醒</h3><ol class="tips">${TIPS.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></section>
+  <section id="t-set"><h3 style="margin-bottom:10px">設定</h3><div class="panel">
+    <div class="field" style="justify-content:space-between"><span>播放和大字卡使用的句尾</span>${genderSeg()}</div>
+    <div class="field" style="justify-content:space-between;margin-top:14px"><span>清除所有學習進度</span><button class="btn sm ghost" id="reset">重設進度</button></div></div></section>`;
+}
+function bindTools(){
+  const ni=document.getElementById('numin');if(!ni)return;
+  const show=()=>{const v=ni.value.replace(/[^\d]/g,'');const out=document.getElementById('numout');
+    if(!v){out.innerHTML='<p class="muted small">輸入價格，看泰語怎麼唸。</p>';return;}
+    const n=Math.min(Number(v),999999999);const parts=thaiNum(n);
+    out.innerHTML=`<div class="thx">${parts.map(p=>p[0]).join('')}</div><div class="rom">${romHTML(parts.map(p=>p[1]).join('-'))}</div><div class="muted small">近似音：${parts.map(p=>p[2]).join(' ')}</div>`;
+    out.dataset.th=parts.map(p=>p[0]).join('');};
+  ni.addEventListener('input',show);
+  document.getElementById('numplay').onclick=()=>{const t=document.getElementById('numout').dataset.th;if(t)speak(t+' บาท');else toast('先輸入一個數字');};
+  const thb=document.getElementById('thb'),twd=document.getElementById('twd'),rate=document.getElementById('rate');
+  const r=()=>{const x=parseFloat(rate.value);return x>0?x:S.rate;};
+  const fmt=x=>isFinite(x)?(Math.round(x*100)/100).toLocaleString('zh-TW'):'';
+  thb.oninput=()=>{twd.value=thb.value?fmt(parseFloat(thb.value)*r()):'';};
+  twd.oninput=()=>{thb.value=twd.value?fmt(parseFloat(twd.value)/r()):'';};
+  rate.oninput=()=>{const x=parseFloat(rate.value);if(x>0){S.rate=x;save();}thb.oninput();};
+  const se=document.getElementById('search');
+  const upd=()=>{searchQ=se.value;const q=searchQ.trim().toLowerCase();const box=document.getElementById('searchres');
+    if(!q){box.innerHTML='';return;}
+    const hits=ALL.filter(o=>(o.mean+o.th+o.rom.normalize('NFD').replace(/[\u0300-\u036f]/g,'')+o.rom+o.zh).toLowerCase().includes(q)).slice(0,30);
+    box.innerHTML=hits.length?`<div class="phl">${hits.map(phRow).join('')}</div>`:'<p class="muted">找不到符合的句子，換個關鍵字試試。</p>';};
+  se.addEventListener('input',e=>{if(!e.isComposing)upd();});
+  se.addEventListener('compositionend',upd);
+  document.getElementById('reset').onclick=()=>{if(confirm('確定要清除所有學習進度嗎？這個動作無法復原。')){S.learned={};S.srs={};S.done={};save();render();toast('已清除學習進度');}};
+}
+function openCard(k){
+  const c=CARDS[k];const txt=c[0]+PART[c[2]][S.gender][0];
+  const root=document.getElementById('ovroot');
+  root.innerHTML=`<div class="ov" role="dialog" aria-modal="true" aria-label="${esc(c[1])}"><div class="huge" lang="th">${esc(txt)}</div><div class="zh">${esc(c[1])}</div>
+  ${c[3]==='addr'?'<textarea id="addr" rows="3" placeholder="在這裡輸入飯店名稱或地址（泰文或英文）"></textarea>':''}
+  <div class="bar2"><button class="btn" id="ovplay">${I.play.replace('<svg','<svg width="18" height="18"')}播放</button><button class="btn ghost" id="ovclose">關閉</button></div></div>`;
+  const ta=document.getElementById('addr');
+  if(ta){try{ta.value=localStorage.getItem(KEY+'-addr')||'';}catch(e){}ta.oninput=()=>{try{localStorage.setItem(KEY+'-addr',ta.value);}catch(e){}};}
+  document.getElementById('ovplay').onclick=()=>speak(txt);
+  const close=()=>{root.innerHTML='';document.removeEventListener('keydown',esck);};
+  const esck=e=>{if(e.key==='Escape')close();};document.addEventListener('keydown',esck);
+  document.getElementById('ovclose').onclick=close;document.getElementById('ovclose').focus();
+}
+
+/* ---------- 事件 ---------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button,[data-go]');if(!b)return;const d=b.dataset;
+  if(d.go){go(d.go);return;}
+  if(d.say){sayId(d.say,false);return;}
+  if(d.slow){sayId(d.slow,true);return;}
+  if(d.speak){speak(d.speak,false);return;}
+  if(d.learn){S.learned[d.learn]=!S.learned[d.learn];if(!S.learned[d.learn])delete S.learned[d.learn];save();render();return;}
+  if(d.learnall){SCBY[d.learnall].list.forEach(o=>S.learned[o.id]=true);save();render();toast('這一課已全部標記為學會');return;}
+  if(d.gender){S.gender=d.gender;save();render();return;}
+  if(d.day){curDay=+d.day;render();return;}
+  if(d.mode){P.mode=d.mode;const sel=document.getElementById('scope');if(sel)P.scope=sel.value;startPractice();render();if(P.mode==='listen'&&SES.q.length)sayId(SES.q[0].o.id);return;}
+  if(d.pscope){P.scope=d.pscope;startPractice();render();return;}
+  if('restart' in d){startPractice();render();if(P.mode==='listen'&&SES.q.length)sayId(SES.q[0].o.id);return;}
+  if(d.dir){SES.dir=d.dir;SES.flip=false;render();return;}
+  if('flip' in d){SES.flip=true;render();const o=SES.q[SES.i];if(o)sayId(o.id);return;}
+  if(d.rate!==undefined){
+    const o=SES.q[SES.i];const cur=S.srs[o.id]||{b:1,d:0};
+    if(d.rate==='1'){const nb=Math.min(5,(cur.b||1)+1);S.srs[o.id]={b:nb,d:Date.now()+INT[nb]};}
+    else{S.srs[o.id]={b:1,d:Date.now()+INT[1]};if(SES.q.filter(x=>x.id===o.id).length<3)SES.q.push(o);}
+    S.learned[o.id]=true;save();SES.reviewed++;SES.i++;SES.flip=false;render();return;
+  }
+  if(d.pick!==undefined){
+    if(SES.picked!=null)return;SES.picked=+d.pick;const it=SES.q[SES.i];
+    if(it.opts[SES.picked].id===it.o.id)SES.right++;else SES.wrong.push(it.o);
+    render();if(P.mode==='zh2th')sayId(it.o.id);return;
+  }
+  if('next' in d){SES.i++;SES.picked=null;render();if(P.mode==='listen'&&SES.i<SES.q.length)sayId(SES.q[SES.i].o.id);return;}
+  if(d.card!==undefined){openCard(+d.card);return;}
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.task){if(t.checked)S.done[t.dataset.task]=true;else delete S.done[t.dataset.task];save();render();}
+  if(t.id==='tripdate'&&t.value){S.trip=t.value;save();curDay=todayDay();render();}
+  if(t.id==='scope'){P.scope=t.value;}
+});
+const _render=render;
+render=function(){_render();if(route()==='tools')bindTools();};
+render();
+</script>
+</body>
+</html>
