@@ -400,7 +400,16 @@ const LEGEND='<div class="legend" aria-label="聲調顏色"><span class="t-mid">
 
 /* ---------- 發音 ---------- */
 let thVoice=null,TTS=null,ttsTh=false;
-function loadVoices(){try{const vs=speechSynthesis.getVoices();thVoice=vs.find(v=>/^th(-|_|$)/i.test(v.lang))||null;}catch(e){}}
+let thVoices=[];
+const FEM=/premwadee|pattara|kanya|narisa|achara|female|woman|หญิง|google/i, MAL=/niwat|\bmale\b|\bman\b|ชาย/i;
+function loadVoices(){try{const vs=speechSynthesis.getVoices();thVoices=vs.filter(v=>/^th(-|_|$)/i.test(v.lang));thVoice=thVoices[0]||null;}catch(e){}}
+function pickVoice(){
+  if(!thVoices.length)return thVoice;
+  const f=thVoices.filter(v=>FEM.test(v.name)), m=thVoices.filter(v=>!FEM.test(v.name)&&MAL.test(v.name));
+  const pref=S.gender==='f'?f:m;
+  const online=pref.find(v=>/online|natural/i.test(v.name));
+  return online||pref[0]||thVoices[0];
+}
 if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
 if(window.claude&&claude.use){
   claude.use('tts').then(async t=>{TTS=t;if(t){try{const l=await t.languages?.().catch(()=>undefined);ttsTh=Array.isArray(l)&&l.some(x=>/^th/i.test(x));}catch(e){}}}).catch(()=>{});
@@ -408,7 +417,7 @@ if(window.claude&&claude.use){
 function speechText(o){let t=o.th.replace(/_+|＿+/g,' ');if(o.p)t+=PART[o.p][S.gender][0];return t;}
 async function speak(text,slow){
   if('speechSynthesis' in window&&thVoice){
-    try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.voice=thVoice;u.lang=thVoice.lang;u.rate=slow?.55:.9;speechSynthesis.speak(u);return;}catch(e){}
+    try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const pv=pickVoice();u.voice=pv;u.lang=pv.lang;u.rate=slow?.55:.9;speechSynthesis.speak(u);return;}catch(e){}
   }
   if(TTS&&ttsTh){try{await TTS.speak(text,{language:'th',rate:slow?.7:1});return;}catch(e){if(e&&e.code==='not_granted'){TTS=null;}}}
   if('speechSynthesis' in window){
